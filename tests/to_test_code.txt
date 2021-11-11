@@ -1,0 +1,1 @@
+./cubefit.x -xyz mdcms/f_butadiene/25_charges_refined.xyz mdcms/f_butadiene/fitted-mtpl.dat -dens cubes/0_SCAN_1_2_3_4_F/B.d.cube -esp cubes/0_SCAN_1_2_3_4_F/B.p.cube
