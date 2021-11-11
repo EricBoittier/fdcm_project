@@ -59,7 +59,9 @@ cd $dir
 echo $PWD
 
 python $ars $initial_fit $initial_fit_cube.d.cube $dens $frames $output_name > ARS.log
-cp $output_dir/$dir/'global_'$dir'-'$start'-'$next'.xyz' refined.xyz
+
+cp $output_name'.global' refined.xyz
+
 $fdcm -xyz refined.xyz -dens $dens -esp $esp  -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 > GD.log
 cp refined.xyz $next'_final.xyz'
 # re-adjust to local
