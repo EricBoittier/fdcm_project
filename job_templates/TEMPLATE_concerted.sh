@@ -4,7 +4,7 @@
 #SBATCH --ntasks=1
 #SBATCH --array=0-35
 #SBATCH --partition=short
-#SBATCH --output=/home/unibas/boittier/FDCM/out_files/{{output_dir}}_%A-%a.out
+#SBATCH --output={{output_dir}}_%A-%a.out
 
 hostname
 #  Path to scripts and executables

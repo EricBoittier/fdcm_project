@@ -73,7 +73,7 @@ def main(argv=None):
     # print(args)
     if args.job_type == "scan":
         template_concerted(args)
-    elif args.job_type == "scan":
+    elif args.job_type == "concerted":
         template_scan(args)
     else:
         print("No job type specified")

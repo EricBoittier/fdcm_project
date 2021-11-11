@@ -1,0 +1,15 @@
+[Defaults]
+output_dir=/data/unibas/boittier/fdcm_test
+cubefit_path=/home/unibas/boittier/fdcm_project/mdcm_bin/cubefit.x
+fdcm_path=/home/unibas/boittier/fdcm_project/fdcm.x
+ars_path=/home/unibas/boittier/fdcm_project/ARS.py
+n_steps=1
+n_charges=20
+scan_name=SCAN_amide1.pdb-
+suffix=.xyz.chk
+frames=/home/unibas/boittier/fdcm_project/mdcms/amide/model2/frames.txt
+initial_fit=/home/unibas/boittier/fdcm_project/mdcms/amide/model2/20_charges_refined.xyz
+initial_fit_cube=/home/unibas/boittier/fdcm_project/mdcms/amide/model2/1_1_new-0.chk
+cubes_dir=/data/unibas/boittier/fdcm/amide/scan
+n_scan_points=0
+job_type=concerted
