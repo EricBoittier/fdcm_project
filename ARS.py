@@ -9,22 +9,23 @@ from Cube import read_cube
 from numpy import (array, dot, arccos, clip)
 from numpy.linalg import norm
 
-
 BOHR_TO_ANGSTROM = 0.529177
+
 
 # This is the straightforward approach as outlined in the answers to
 # "How do I calculate a dihedral angle given Cartesian coordinates?"
 def dihedral2(p):
     b = p[:-1] - p[1:]
     b[0] *= -1
-    v = np.array( [ v - (v.dot(b[1])/b[1].dot(b[1])) * b[1] for v in [b[0], b[2]] ] )
+    v = np.array([v - (v.dot(b[1]) / b[1].dot(b[1])) * b[1] for v in [b[0], b[2]]])
     # Normalize vectors
-    v /= np.sqrt(np.einsum('...i,...i', v, v)).reshape(-1,1)
+    v /= np.sqrt(np.einsum('...i,...i', v, v)).reshape(-1, 1)
     b1 = b[1] / np.linalg.norm(b[1])
     x = np.dot(v[0], v[1])
     m = np.cross(v[0], b1)
     y = np.dot(m, v[1])
-    return np.degrees(np.arctan2( y, x ))
+    return np.degrees(np.arctan2(y, x))
+
 
 def usage():
     s = """Take the MDCM charges from a conformation in cubefile_1 and 
@@ -93,25 +94,25 @@ def get_local_axis(atom_pos, frame_atoms, method="bond"):
         #  Z axes
         ez1 = np.array([b1_x, b1_y, b1_z])
         ez3 = np.array([b2_x, b2_y, b2_z])
-        
-        if method=="bond":
+
+        if method == "bond":
             ez2 = np.array([b1_x, b1_y, b1_z])
-            
-        elif method=="bisector":
+
+        elif method == "bisector":
             """ Calculate Z(2) as bisector
             """
             bi_x = ez1[0] + ez3[0]
             bi_y = ez1[1] + ez3[1]
             bi_z = ez1[2] + ez3[2]
-            
+
             #  get norm
-            r_bi = np.sqrt(bi_x**2 + bi_y**2 + bi_z**2) 
+            r_bi = np.sqrt(bi_x ** 2 + bi_y ** 2 + bi_z ** 2)
             #  normalize
-            ez2 = np.array([bi_x, bi_y, bi_z])/r_bi
-            
+            ez2 = np.array([bi_x, bi_y, bi_z]) / r_bi
+
             if r_bi < 0.0001:
                 print("Colinearity detected! (Bad)")
-            
+
         else:
             assert False, "No valid method supplied!"
 
@@ -125,18 +126,17 @@ def get_local_axis(atom_pos, frame_atoms, method="bond"):
         ey1[1] = ey1[1] / re_x
         ey1[2] = ey1[2] / re_x
 
-#         ey1 = np.cross(ez1, ez3)
+        #         ey1 = np.cross(ez1, ez3)
 
         ey2 = ey1
         ey3 = ey1
-
 
         #  X axes
         ex1 = np.zeros(3)
         ex3 = np.zeros(3)
         #  ex1 and ex2
         ex1 = np.cross(ey1, ez1)
-        if method=="bond":
+        if method == "bond":
             ex2 = ex1
         else:
             ex2 = np.cross(ey2, ez2)
@@ -150,6 +150,7 @@ def get_local_axis(atom_pos, frame_atoms, method="bond"):
 
 
 def save_charges(charge_positions, charges, filename="out_charges.xyz"):
+    print(filename)
     file = open(filename, "w")
     file.write("{}\n".format(len(charge_positions)))
     file.write("s                      x[A]                      y[A]                      z[A]                   "
@@ -182,7 +183,7 @@ class ARS():
         # Open Cube files
         self.atom_positions, self.atom_names = read_cube_file(pcube)
         self.n_atoms = len(self.atom_names)
-        
+
         if pcube_2 is not None:
             self.atom_positions_plus, atom_names = read_cube_file(pcube_2)
             self.n_atoms_2 = len(atom_names)
@@ -198,38 +199,36 @@ class ARS():
         for f in self.frames:
             a1, a2, a3 = f.split()
             self.frame_atoms.append([int(a1), int(a2), int(a3)])
-            
+
         #  Match charges to closest atoms
         self.charge_atom_associations, self.atom_charge_dict = self.match_charges()
 
         # Calculate local axes and transform charges
         # Calculate the new axes for each frame
         self.atom_positions = np.array(self.atom_positions)
-        
+
         if pcube_2 is not None:
             self.atom_positions_plus = np.array(self.atom_positions_plus)
-        
+
         self.frame_vectors = get_local_axis(self.atom_positions, self.frame_atoms, method=self.method)
-        
+
         if pcube_2 is not None:
             self.frame_vectors_plus = get_local_axis(self.atom_positions_plus, self.frame_atoms, method=self.method)
 
         self.c_positions_local = self.global_to_local()
-        
+
         if pcube_2 is not None:
             self.charge_positions_plus = self.local_to_global()
-            
-    
-    def get_dih(self, a,b,c,d):
-        atoms=self.atom_positions
-        p = np.array([atoms[a], atoms[b], atoms[c], atoms[d]])
-        return dihedral2(p)
-    
-    def get_dih_2(self, a,b,c,d):
-        atoms=self.atom_positions_plus
+
+    def get_dih(self, a, b, c, d):
+        atoms = self.atom_positions
         p = np.array([atoms[a], atoms[b], atoms[c], atoms[d]])
         return dihedral2(p)
 
+    def get_dih_2(self, a, b, c, d):
+        atoms = self.atom_positions_plus
+        p = np.array([atoms[a], atoms[b], atoms[c], atoms[d]])
+        return dihedral2(p)
 
     def align_in_global(self, filename_template=None):
         self.rotation, rmsd = Kabsch.align_vectors(self.atom_positions, self.atom_positions_plus)
@@ -246,7 +245,7 @@ class ARS():
             save_charges(tmp_charge_positions, self.c_charges, filename=filename_template.format("charges"))
 
         print(rmsd)
-    
+
     def get_c_positions_local(self):
         return self.c_positions_local
 
@@ -302,32 +301,6 @@ class ARS():
 
         plt.show()
 
-    def test(self):
-        """
-        Check that all atoms/charges are included in
-        """
-        #  Atoms
-
-        assert self.n_atoms == self.n_atoms_2, "Molecules from Cube files must have the same number of atoms"
-
-        set1 = set(range(self.n_atoms))
-        set2 = set(self.atom_charge_dict.keys())
-        if set1 != set2:
-            print(set1, set2)
-            print("Something is wrong with Atoms?")
-            # sys.exit()
-        #  Charges
-        set1 = set(range(self.n_charges))
-        flat_list = []
-        for sublist in list(self.atom_charge_dict.values()):
-            for item in sublist:
-                flat_list.append(item)
-        set2 = set(flat_list)
-        if set1 != set2:
-            print(set1, set2)
-            print("Something is wrong with Charges?")
-            # sys.exit()
-        print("atom_charge_dict: ", self.atom_charge_dict)
 
     def plot_axe(self, il, local_vector, atom_index, c="k"):
         atom_pos = self.atom_positions[atom_index]
@@ -400,30 +373,26 @@ class ARS():
                         c_positions_local[charge][2] = local_z_pos
 
                 used_atoms.append(atom_index)
-                
+
         return c_positions_local
 
     def save_charges_local(self, output_filename):
-        output_filename_split = output_filename.split("/")
-        output_filename = "local_" + output_filename_split[-1]
-        output_filename = os.path.join(*output_filename_split[:-1], output_filename)
-        save_charges(self.c_positions_local, 
-                     self.c_charges, filename=output_filename)
-        
+        # output_filename_split = output_filename.split("/")
+        # output_filename = "local_" + output_filename_split[-1]
+        # output_filename = os.path.join(*output_filename_split[:-1], output_filename)
+        save_charges(self.c_positions_local,
+                     self.c_charges, filename=output_filename+".local")
+
     def set_charge_positions_plus(self, charge_positions):
         self.charge_positions_plus = charge_positions
-        
+
     def set_local_charge_positions(self, charge_positions):
         self.c_positions_local = charge_positions
 
     def save_charges_global(self, output_filename):
-        output_filename_split = output_filename.split("/")
-        output_filename = "global_" + output_filename_split[-1]
-        output_filename = os.path.join(*output_filename_split[:-1], output_filename)
-        if len(output_filename.split("/"))>1 and output_filename[0] != "/":
-            output_filename = "/" + output_filename
-        save_charges(self.charge_positions_plus, 
-                     self.c_charges, filename = output_filename)
+
+        save_charges(self.charge_positions_plus,
+                     self.c_charges, filename=output_filename+".global")
 
     def get_distance_charges(self):
         return Kabsch.align_vectors(self.charge_positions_plus, self.c_positions)[1]
@@ -474,25 +443,23 @@ if __name__ == "__main__":
     """ 
     ARS.py charges.xyz cubefile_1.cub cubefile_2.cub frames.txt output_filename.xyz
     """
-    
+
     xyz_file_name = sys.argv[1]
     pcube = sys.argv[2]
     pcube_2 = sys.argv[3]
     frame_file = sys.argv[4]
     output_filename = sys.argv[5]
-    
+
     dih = False
     if len(sys.argv) > 6:
         dih = [int(x) for x in sys.argv[6].split("_")]
-
 
     ARS_obj = ARS(xyz_file_name, pcube, frame_file, pcube_2=pcube_2, method="bond")
     ARS_obj.save_charges_global(output_filename)
     ARS_obj.save_charges_local(output_filename)
     print(f"Distance between Atom configurations = {ARS_obj.get_distance_atoms()}")
     print(f"Distance between Charge configurations = {ARS_obj.get_distance_charges()}")
-    
+
     if dih:
         dihedral = ARS_obj.get_dih_2(*dih)
         print(f"Dihedral {dih} = {dihedral}")
-    

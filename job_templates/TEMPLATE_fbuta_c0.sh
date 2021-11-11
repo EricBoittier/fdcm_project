@@ -7,11 +7,11 @@
 #SBATCH --output=/home/unibas/boittier/FDCM/out_files/{{output_dir}}_%A-%a.out
 
 hostname
-olivers_code="/home/unibas/boittier/esp_check/bin/cubefit.x"
-
+cubefit="{{cubefit_path}}"
+fdcm="{{fdcm_path}}"
+ars="{{ars_path}}"
 c_w_dir=$PWD
-cd $c_w_dir
-cd ..
+
 
 dih="{{dih}}"
 n_steps={{n_steps}}
@@ -26,16 +26,17 @@ initial_fit_cube="{{initial_fit_cube}}"
 
 mkdir -p $output_dir
 cd $output_dir
+
 # Do Initial Fit
 #
 # adjust reference frame
-python ~/AdjustReference-System/ARS.py $initial_fit $initial_fit_cube.d.cube  $cubes_dir/0$scan_name"p.cube" $frames 0_fit.xyz $dih > "ARS.log"
+python $ars $initial_fit $initial_fit_cube.d.cube  $cubes_dir/0$scan_name"p.cube" $frames 0_fit.xyz $dih > "ARS.log"
 # do gradient descent fit
-time ../cubefit.x -xyz global_0_fit.xyz -dens $cubes_dir/0"$scan_name"d.cube -esp  $cubes_dir/"0"$scan_name"p.cube" -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 > "GD.log"
+$fdcm -xyz 0_fit.xyz.global -dens $cubes_dir/0"$scan_name"d.cube -esp  $cubes_dir/"0"$scan_name"p.cube" -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 > "GD.log"
 # make a cubefile for the fit
-$olivers_code -v -generate -esp  $cubes_dir/"0"$scan_name"p.cube" -dens  $cubes_dir/"0"$scan_name"d.cube" -xyz refined.xyz > "cubemaking.log"
+$cubefit -v -generate -esp  $cubes_dir/"0"$scan_name"p.cube" -dens  $cubes_dir/"0"$scan_name"d.cube" -xyz refined.xyz > "cubemaking.log"
 # do analysis
-$olivers_code -v -analysis -esp  $cubes_dir/"0"$scan_name"p.cube" -esp2 $n_charges"charges.cube" -dens  $cubes_dir/"0"$scan_name"d.cube" > "analysis.log"
+$cubefit -v -analysis -esp  $cubes_dir/"0"$scan_name"p.cube" -esp2 $n_charges"charges.cube" -dens  $cubes_dir/"0"$scan_name"d.cube" > "analysis.log"
 
 initial_fit="../refined.xyz"
 
@@ -51,19 +52,16 @@ cd $dir
 echo $PWD
 
 python ~/AdjustReference-System/ARS.py $initial_fit $initial_fit_cube.d.cube $cubes_dir/$start$scan_name"d.cube" $frames $output_name $dih > "ARS.log"
-
-cp "global_"$output_name refined.xyz
-
+cp $output_name".global" refined.xyz
 time ../../cubefit.x -xyz refined.xyz -dens $cubes_dir/"$start"$scan_name"d.cube" -esp  $cubes_dir/"$start"$scan_name"p.cube" -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 > "GD.log"
 
 cp refined.xyz $next"_final.xyz"
 
 # re-adjust to local
 python ~/AdjustReference-System/ARS.py refined.xyz $initial_fit_cube.d.cube $cubes_dir/$start$scan_name"d.cube" $frames refined.xyz $dih > "ARS-2.log"
-
 # make a cubefile for the fit
-$olivers_code -v -generate -esp  $cubes_dir/"$start"$scan_name"p.cube" -dens  $cubes_dir/"$start"$scan_name"d.cube" -xyz refined.xyz > "cubemaking.log"
+$cubefit -v -generate -esp  $cubes_dir/"$start"$scan_name"p.cube" -dens  $cubes_dir/"$start"$scan_name"d.cube" -xyz refined.xyz > "cubemaking.log"
 # do analysis
-$olivers_code -v -analysis -esp  $cubes_dir/"$start"$scan_name"p.cube" -esp2 $n_charges"charges.cube" -dens  $cubes_dir/"$start"$scan_name"d.cube" > "analysis.log"
+$cubefit -v -analysis -esp  $cubes_dir/"$start"$scan_name"p.cube" -esp2 $n_charges"charges.cube" -dens  $cubes_dir/"$start"$scan_name"d.cube" > "analysis.log"
 
 
