@@ -58,7 +58,7 @@ mkdir -p $dir
 cd $dir
 echo $PWD
 
-python $ars $initial_fit $initial_fit_cube.d.cube $dens $frames $output_name > ARS.log
+python $ars $initial_fit $cubes_dir/$scan_name'0'$suffix'.d.cube' $dens $frames $output_name > ARS.log
 
 cp $output_name'.global' refined.xyz
 

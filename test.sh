@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH --job-name=/data/unibas/boittier/fdcm_test
+#SBATCH --job-name=/data/unibas/boittier/amide2
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --array=0-35
+#SBATCH --array=24-25
 #SBATCH --partition=short
-#SBATCH --output=/data/unibas/boittier/fdcm_test_%A-%a.out
+#SBATCH --output=/data/unibas/boittier/amide2_%A-%a.out
 
 hostname
 #  Path to scripts and executables
@@ -14,14 +14,14 @@ ars=/home/unibas/boittier/fdcm_project/ARS.py
 
 #  Variables for the job
 n_steps=1
-n_charges=20
-scan_name=SCAN_amide1.pdb-
+n_charges=24
+scan_name=SCAN_amide2.pdb-
 suffix=.xyz.chk
 cubes_dir=/data/unibas/boittier/fdcm/amide/scan
-output_dir=/data/unibas/boittier/fdcm_test
-frames=/home/unibas/boittier/fdcm_project/mdcms/amide/model2/frames.txt
-initial_fit=/home/unibas/boittier/fdcm_project/mdcms/amide/model2/20_charges_refined.xyz
-initial_fit_cube=/home/unibas/boittier/fdcm_project/mdcms/amide/model2/1_1_new-0.chk
+output_dir=/data/unibas/boittier/amide2
+frames=/home/unibas/boittier/fdcm_project/mdcms/amide/model1/frames.txt
+initial_fit=/home/unibas/boittier/fdcm_project/mdcms/amide/model1/24_charges_refined.xyz
+initial_fit_cube=/home/unibas/boittier/fdcm_project/mdcms/amide/model1/amide1.pdb.chk
 #  for initial fit
 esp=$cubes_dir/$scan_name'0'$suffix'.p.cube'
 dens=$cubes_dir/$scan_name'0'$suffix'.d.cube'
@@ -58,8 +58,10 @@ mkdir -p $dir
 cd $dir
 echo $PWD
 
-python $ars $initial_fit $initial_fit_cube.d.cube $dens $frames $output_name > ARS.log
-cp $output_dir/$dir/'global_'$dir'-'$start'-'$next'.xyz' refined.xyz
+python $ars $initial_fit $cubes_dir/$scan_name'0'$suffix'.d.cube' $dens $frames $output_name > ARS.log
+
+cp $output_name'.global' refined.xyz
+
 $fdcm -xyz refined.xyz -dens $dens -esp $esp  -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 > GD.log
 cp refined.xyz $next'_final.xyz'
 # re-adjust to local

@@ -2,11 +2,7 @@ import pandas as pd
 from ase import Atoms
 from dscribe.descriptors import SOAP
 import numpy as np
-
 import sys
-
-ars_path = "/home/boittier/Documents/PhD/AdjustReference-System/"
-sys.path.insert(1, ars_path)
 from ARS import *
 
 
@@ -40,6 +36,7 @@ def z_to_char(z):
 header = """24
 s                      x[A]                      y[A]                      z[A]                      q[e]\n"""
 line_format = "N {} {} {} {} \n"
+
 #  Hard coding charges for ester
 q = [0.6959175615854226, 0.4294665048044459, 0.7289443612696791, -0.8899528116456963, .4821174903544280,
      0.6035297564939646, 0.0604057803354635, 6991174418445399, 0.4131324281244263, .9286014603942530,
@@ -85,10 +82,19 @@ def model_to_local(cube_path, local_output):
         f.write(line_format.format(*xyz, q[i]))
 
 
+        
 frame_file = "/home/boittier/ester_traj/frames.txt"
 cube = "/home/boittier/ester_traj/t0/frame_33.chk.p.cube"
 old_global_xyz = "/home/boittier/FDCM/ester_t1_100/frame_33/refined.xyz"
 local_output = "frame_33_local.xyz"
 
-model_to_local(path, local_output)
-do_transformation(old_global_xyz, cube, frame_file)
+def main():
+    frame_file = sys.argv[1]
+    cube = sys.argv[2]
+    old_global_xyz = sys.argv[3]
+    local_output = sys.argv[4]
+    model_to_local(path, local_output)
+    do_transformation(old_global_xyz, cube, frame_file)
+
+if __name__ == "__main__":
+    main()

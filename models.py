@@ -41,7 +41,7 @@ def z_scale(data):
     return data.T, _means, _stds
 
 
-df = pd.read_pickle("../MD/25.pkl")
+df = pd.read_pickle("saved_models/25.pkl")
 
 ONLY_HEAVY = False
 MODEL = "KR"
@@ -82,10 +82,10 @@ for i in range(len(df)):
 
 der, des = soap_desc.derivatives(samples, method="analytical", return_descriptor=True, n_jobs=8)
 # des = soap_desc.create(samples, n_jobs=2)
-with open('des.pkl', 'wb') as f:
-    pickle.dump(des, f)
-with open('der.pkl', 'wb') as f:
-    pickle.dump(der, f)
+# with open('des.pkl', 'wb') as f:
+#     pickle.dump(des, f)
+# with open('der.pkl', 'wb') as f:
+#     pickle.dump(der, f)
 
 # print(der)
 # print(der.shape)

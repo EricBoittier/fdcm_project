@@ -1,0 +1,14 @@
+REMARK: FILE AUTOMATICALLY GENERATED FROM /home/boittier/pydcm/models/amide1/ref/amide1.pdb.chk.d.cube
+ATOM      1  C1  MOL     1       1.830  -0.539  -0.001  1.00  0.00      MOL
+ATOM      2  C2  MOL     1       0.483   0.162   0.001  1.00  0.00      MOL
+ATOM      3  H3  MOL     1       2.402  -0.199   0.865  1.00  0.00      MOL
+ATOM      4  H4  MOL     1      -0.488  -1.647   0.002  1.00  0.00      MOL
+ATOM      5  H5  MOL     1       1.760  -1.629   0.024  1.00  0.00      MOL
+ATOM      6  H6  MOL     1      -2.135   0.514   0.883  1.00  0.00      MOL
+ATOM      7  H7  MOL     1      -2.130   0.517  -0.884  1.00  0.00      MOL
+ATOM      8  N8  MOL     1      -0.614  -0.649   0.001  1.00  0.00      MOL
+ATOM      9  O9  MOL     1       0.385   1.380   0.000  1.00  0.00      MOL
+ATOM     10  C10 MOL     1      -1.964  -0.104  -0.001  1.00  0.00      MOL
+ATOM     11  H11 MOL     1       2.380  -0.238  -0.895  1.00  0.00      MOL
+ATOM     12  H12 MOL     1      -2.676  -0.929  -0.004  1.00  0.00      MOL
+END
