@@ -1,0 +1,17 @@
+[Defaults]
+output_dir=/data/unibas/boittier/morton-large5
+cubefit_path=/home/unibas/boittier/fdcm_project/mdcm_bin/cubefit.x
+fdcm_path=/home/unibas/boittier/fdcm_project/fdcm.x
+ars_path=/home/unibas/boittier/fdcm_project/ARS.py
+n_steps=5
+n_charges=24
+scan_name=SCAN_amide1.pdb-
+suffix=.xyz.chk
+frames=/home/unibas/boittier/fdcm_project/mdcms/amide/model1/frames.txt
+initial_fit=/home/unibas/boittier/fdcm_project/mdcms/amide/model1/24_charges_refined.xyz
+initial_fit_cube=/home/unibas/boittier/fdcm_project/mdcms/amide/model1/amide1.pdb.chk
+cubes_dir=/data/unibas/boittier/fdcm/amide/scan-large
+n_scan_points=0
+job_type=morton
+morton= 25 24 30 31 44 45 43 42 51 50 52 53 46 47 41 40 49 48 54 55 36 37 35 34 59 58 60 61 38 39 33 32 57 56 62 63 76 77 75 74 83 82 84 85 78 79 73 72 81 80 86 87 68 69 67 66 91 90 92 93 70 71 65 64 89 88 94 95 108 109 107 106 115 114 116 117 110 111 105 104 113 112 118 119 100 101 99 98 123 122 124 125 102 103 97 96 121 120 126 127 140 141 139 138 147 146 148 149 142 143 137 136 145 144 150 151 132 133 131 130 155 154 156 157 134 135 129 128 153 152 158 159
+morton_start=0

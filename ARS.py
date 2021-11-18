@@ -12,6 +12,14 @@ from numpy.linalg import norm
 BOHR_TO_ANGSTROM = 0.529177
 
 
+def angle(a, b, c):
+    ba = a - b
+    bc = c - b
+    cosine_angle = np.dot(ba, bc) / (np.linalg.norm(ba) * np.linalg.norm(bc))
+    a3 = np.degrees(np.arccos(cosine_angle))
+    return a3
+    
+
 # This is the straightforward approach as outlined in the answers to
 # "How do I calculate a dihedral angle given Cartesian coordinates?"
 def dihedral2(p):
@@ -219,7 +227,12 @@ class ARS():
 
         if pcube_2 is not None:
             self.charge_positions_plus = self.local_to_global()
-
+            
+    def get_angle(self, a, b, c):
+        atoms = self.atom_positions
+        p = np.array([atoms[a], atoms[b], atoms[c]])
+        return angle(*p)
+        
     def get_dih(self, a, b, c, d):
         atoms = self.atom_positions
         p = np.array([atoms[a], atoms[b], atoms[c], atoms[d]])
@@ -390,7 +403,6 @@ class ARS():
         self.c_positions_local = charge_positions
 
     def save_charges_global(self, output_filename):
-
         save_charges(self.charge_positions_plus,
                      self.c_charges, filename=output_filename+".global")
 

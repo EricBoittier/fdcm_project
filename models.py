@@ -61,7 +61,6 @@ soap_desc = SOAP(species=["C", "H", "O"], rcut=RCUT, nmax=NMAX, lmax=LMAX, cross
 #  Give charge indices for fitting, 1th indexed
 # charge_indices = [1, 2, 5, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 22, 24]
 charge_indices = range(1, 25)
-
 indices = []
 for i in range(len(df)):
     indices.append(heavy_atoms)

@@ -1,5 +1,5 @@
 [Defaults]
-output_dir=/data/unibas/boittier/amide2
+output_dir=/data/unibas/boittier/morton_test
 cubefit_path=/home/unibas/boittier/fdcm_project/mdcm_bin/cubefit.x
 fdcm_path=/home/unibas/boittier/fdcm_project/fdcm.x
 ars_path=/home/unibas/boittier/fdcm_project/ARS.py
@@ -12,4 +12,6 @@ initial_fit=/home/unibas/boittier/fdcm_project/mdcms/amide/model1/24_charges_ref
 initial_fit_cube=/home/unibas/boittier/fdcm_project/mdcms/amide/model1/amide1.pdb.chk
 cubes_dir=/data/unibas/boittier/fdcm/amide/scan
 n_scan_points=0
-job_type=concerted
+job_type=morton
+morton= 1 17 16 2 15 5 4 6 7 12 13 11 10 3 8 14 9 18 19 35 34 20 33 23 22 24 25 30 31 29 28 21 26 32 27
+morton_start=0

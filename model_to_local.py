@@ -6,6 +6,16 @@ import sys
 from ARS import *
 
 
+def func(data, a, b,c,d,e,f,g,h,i,j):
+    return a*np.sin(b*data[0]+c)+ d + e*data[1]**3 + f*data[1]**2 + g*data[1] + h*data[2]**3 + i*data[2]**2 + j*data[2]
+
+def func2(data, a, b,c,d,g,j):
+    return a*np.sin(b*data[0]+c)+ d + g*data[1]**2 + j*data[2]**2
+
+def func3(data, a, b,c,d):
+    return a*np.sin(b*data[0]+c)+ d #+ g*data[1] + j*data[2]
+
+
 def do_transformation(old_global_xyz, cube, frame_file):
     ars_obj = ARS(old_global_xyz, cube, frame_file, pcube_2=cube)
 
@@ -29,6 +39,8 @@ def z_to_char(z):
         return "H"
     elif z == 6:
         return "C"
+    elif z == 7:
+        return "N"
     elif z == 8:
         return "O"
 
@@ -36,13 +48,6 @@ def z_to_char(z):
 header = """24
 s                      x[A]                      y[A]                      z[A]                      q[e]\n"""
 line_format = "N {} {} {} {} \n"
-
-#  Hard coding charges for ester
-q = [0.6959175615854226, 0.4294665048044459, 0.7289443612696791, -0.8899528116456963, .4821174903544280,
-     0.6035297564939646, 0.0604057803354635, 6991174418445399, 0.4131324281244263, .9286014603942530,
-     -0.1057946580878595, 9961038253671308, .3737552305035935, .9714181100989372, 0.9973398242463560,
-     0.7637225416907655, -0.9974375214017446, 0.4871145088925188, .4662300369825688, .6223673236702755,
-     0.9509229066582735, -0.9922381659518612, -0.6086911331096487, 0.3897866237988844]
 
 
 def cube_to_xyz(path):
@@ -81,20 +86,63 @@ def model_to_local(cube_path, local_output):
     for i, xyz in enumerate(pred):
         f.write(line_format.format(*xyz, q[i]))
 
+        
+def fit_to_local(cube_path, fit_path, old_mdcm_path, local_output, frame_file):
+    #  Load the fit
+    per_charge_params = pd.read_pickle(fit_path)
+    
+    #  Creat an ARS object for atom positions, charges, angles, dih, etc
+    ars_obj = ARS(old_mdcm_path, cube_path, frame_file, pcube_2=cube_path)
+    
+    q = ars_obj.c_charges
+    n_charges = len(q)
+    a1 = ars_obj.get_angle(0, 1, 7)
+    print(a1)
+    a2 = ars_obj.get_angle(1, 7, 9)
+    print(a2)
+    d1 = ars_obj.get_dih( 0, 1, 7, 9)
+    print(d1)
+    
+    #  Calculate the parameters from the cube file
+    f = open(local_output, "w")
+    f.write(header)
+    fitted_local = []
+    for i in range(n_charges):
+        x = func([d1, a1, a2], *per_charge_params[i])
+        y = func([d1, a1, a2], *per_charge_params[i+n_charges])
+        z = func([d1, a1, a2], *per_charge_params[i+n_charges*2])
+        f.write(line_format.format(x, y, z, q[i]))
+        fitted_local.append([x, y, z])
+        
+    ars_obj.set_local_charge_positions(np.array(fitted_local))
+    cp = ars_obj.local_to_global()
+    ars_obj.set_charge_positions_plus(cp)
+    ars_obj.save_charges_global("fit.xyz")
+
+    pass
 
         
-frame_file = "/home/boittier/ester_traj/frames.txt"
-cube = "/home/boittier/ester_traj/t0/frame_33.chk.p.cube"
-old_global_xyz = "/home/boittier/FDCM/ester_t1_100/frame_33/refined.xyz"
-local_output = "frame_33_local.xyz"
+# frame_file = "/home/boittier/ester_traj/frames.txt"
+# cube = "/home/boittier/ester_traj/t0/frame_33.chk.p.cube"
+# old_global_xyz = "/home/boittier/FDCM/ester_t1_100/frame_33/refined.xyz"
+# local_output = "frame_33_local.xyz"
 
 def main():
-    frame_file = sys.argv[1]
-    cube = sys.argv[2]
-    old_global_xyz = sys.argv[3]
-    local_output = sys.argv[4]
-    model_to_local(path, local_output)
-    do_transformation(old_global_xyz, cube, frame_file)
+#     frame_file = sys.argv[1]
+#     cube = sys.argv[2]
+#     old_global_xyz = sys.argv[3]
+#     local_output = sys.argv[4]
+
+#     model_to_local(cube, local_output)
+#     do_transformation(old_global_xyz, cube, frame_file)
+    frame_file = "/home/unibas/boittier/fdcm_project/mdcms/amide/model1/frames.txt"
+    cube_path = "/data/unibas/boittier/fdcm/amide/scan-large/SCAN_amide1.pdb-0.xyz.chk.d.cube"
+    local_output = "test_fit.xyz"
+    fit_path = "/home/unibas/boittier/fdcm_project/fdcm_notebooks/loop-model.pkl"
+    old_mdcm_path = "/home/unibas/boittier/fdcm_project/mdcms/amide/model1/24_charges_refined.xyz"
+    
+    fit_to_local(cube_path, fit_path, old_mdcm_path, local_output, frame_file)
+    
 
 if __name__ == "__main__":
     main()
