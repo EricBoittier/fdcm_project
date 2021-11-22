@@ -101,7 +101,7 @@ integer :: ppos !for use with scan()
 ! other program "modes", only used for analysis or generating cube files at better resolution
 logical :: analysis_mode = .false. ! analysis mode: compare two cube files and compute RMSDs
 logical :: generate_mode = .false. ! for generating esp cube file from charges (at higher resolution)
-
+logical :: write_output = .false. ! for generating esp cube file from charges (at higher resolution)
 
 !how to "prune" grid points
 logical  :: use_vdW_grid_cutoff = .true.
@@ -234,6 +234,7 @@ do i = 1,cmd_count
         call get_command_argument(i+1, arg, l)
         read(arg,'(A)',iostat = ios) output_filename
         if(ios /= 0) call throw_error('Could not read command line argument "-esp"')
+        write_output = .true.
     end if
 
 end do
@@ -315,19 +316,9 @@ RMSE_a1 = rmse_qtot(charges(1:qdim))
 write(*,'(A30,2ES23.9,I10)') "Error", RMSE_a1*hartree2kcal
 
 call write_xyz_file(charges(1:qdim),filename="refined.xyz")
-call write_xyz_file(charges(1:qdim),filename=output_filename)
+if (write_output) call write_xyz_file(charges(1:qdim),filename=output_filename)
 
 contains
-
-!
-!    Functions
-!    F  
-!    F
-!    FFFFFFFFF       U  N C T I O N S 
-!    F
-!    F
-!    F
-
 
 !-------------------------------------------------------------------------------
 ! computes root mean squared error of the current fit to the true esp
