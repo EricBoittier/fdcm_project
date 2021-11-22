@@ -1,10 +1,16 @@
-import os
 import argparse
 import configparser
 import sys
 
-from analyse_scan import analyse
+from analyse_scan import analyse, get_path_neighbours
 from job_maker import template_concerted, template_scan, template_morton
+
+
+def template_neighbours(args):
+    path, neighbours = get_path_neighbours(args)
+    print(path)
+    print(neighbours)
+    return
 
 
 def main(argv=None):
@@ -43,14 +49,15 @@ def main(argv=None):
     parser.set_defaults(**defaults)
     parser.add_argument("--option")
     args = parser.parse_args(remaining_argv)
-    # print("Option is \"{}\"".format(args.option))
-    # print(args)
+
     if args.job_type == "scan":
-        template_concerted(args)
+        output = template_concerted(args)
     elif args.job_type == "concerted":
-        template_scan(args)
+        output = template_scan(args)
     elif args.job_type == "morton":
-        template_morton(args)
+        output = template_morton(args)
+    elif args.job_type == "neighbours":
+        output = template_neighbours(args)
     elif args.job_type == "analysis":
         analyse(args)
     else:

@@ -1,14 +1,11 @@
-import argparse
-import configparser
+import os
 
 import cclib
 import numpy as np
-import os
 import pandas as pd
-import sys
 
 
-def neighbours(point, ranges):
+def get_neighbours(point, ranges):
     neighbours = []
     for i, dim in enumerate(point):
         if ranges[i][0] <= (dim - 1) <= ranges[i][1]:
@@ -61,6 +58,54 @@ def get_local_charges(path):
     return tmp_dict
 
 
+def get_path_neighbours(args):
+    gaussian_scan_output = args.gaussian_scan_output
+    print(gaussian_scan_output)
+    p = cclib.io.ccopen(gaussian_scan_output)
+    p = p.parse()
+    scan_names = p.scannames
+    scan_parms = np.array(p.scanparm)
+    print(scan_parms)
+
+    a1 = [x // 1 for x in scan_parms[0]]
+    a2 = [x // 1 for x in scan_parms[1]]
+    d1 = [x // 1 for x in scan_parms[2]]
+
+    a1 = {i: x for i, x in enumerate(a1)}
+    a2 = {i: x for i, x in enumerate(a2)}
+    d1 = {i: x for i, x in enumerate(d1)}
+
+    a1_ = []
+    a2_ = []
+    d1_ = []
+    frames = []
+
+    for frame in range(len(a1)):
+        a1_.append(a1[frame])
+        a2_.append(a2[frame])
+        d1_.append(d1[frame])
+
+    df = pd.DataFrame({"frame": frames, "a1": a1_, "a2": a2_, "d1": d1_})
+    df = add_key_int(df)
+    ranges = [[0, len(set(a1_))], [0, len(set(a2))], [0, len(set(d1))]]
+
+    path = []
+    neighbours = []
+
+    for key, j in enumerate(range(len(frames))):
+        r = df[df["frame"] == key]
+        i = np.array([int(r["a1_"]), int(r["a2_"]), int(r["d1_"])])
+
+        ns = neighbours(i, ranges)
+        frame = key_to_frame(df, i)
+        print("visiting: frame_", frame)
+        # visited.append(frame)
+
+        n = [key_to_frame(df, ii) for ii in ns]
+        neighbours.append(n)
+        path.append(key)
+
+
 def analyse(args):
     gaussian_scan_output = args.gaussian_scan_output
     data_path = args.data_path
@@ -111,17 +156,3 @@ def analyse(args):
     df.to_csv(csv_out_name)
 
     df = add_key_int(df)
-
-    ranges = [[0, 3], [0, 3], [0, 9]]
-
-    for key, j in enumerate(range(160)):
-        r = df[df["frame"] == key]
-        i = np.array([int(r["a1_"]), int(r["a2_"]), int(r["d1_"])])
-
-        ns = neighbours(i, ranges)
-        frame = key_to_frame(df, i)
-        print("visiting: frame_", frame)
-        # visited.append(frame)
-
-        n = [key_to_frame(df, ii) for ii in ns]
-        print(n)

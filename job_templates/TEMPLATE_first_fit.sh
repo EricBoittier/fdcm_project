@@ -2,7 +2,6 @@
 #SBATCH --job-name={{output_dir}}
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --array=0-35
 #SBATCH --partition=short
 #SBATCH --output={{output_dir}}_%A-%a.out
 
@@ -51,8 +50,8 @@ cd ..
 
 dir='frame_'$next
 output_name=$output_dir/$dir/$dir'-'$start'-'$next'.xyz'
-dens=$cubes_dir/$scan_name$start$suffix'.d.cube'
-esp=$cubes_dir/$scan_name$start$suffix'.p.cube'
+dens=$cubes_dir/$scan_name$next$suffix'.d.cube'
+esp=$cubes_dir/$scan_name$next$suffix'.p.cube'
 
 mkdir -p $dir
 cd $dir
