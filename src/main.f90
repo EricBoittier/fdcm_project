@@ -94,6 +94,7 @@ character(len=1024) :: input_esp_cubefile = '', &
                        input_xyzfile = '', &
                        input_density_cubefile = '', &
                        prefix = '', &
+                       output_filename = '', &
                        dummystring = '', dummystring2 = '', dummystring3 = '' ! input files
 integer :: ppos !for use with scan()
 
@@ -228,6 +229,13 @@ do i = 1,cmd_count
         if(ios /= 0) call throw_error('Could not read command line argument "-esp"')
     end if
 
+    ! input esp cube file
+    if(arg(1:l) == '-output') then
+        call get_command_argument(i+1, arg, l)
+        read(arg,'(A)',iostat = ios) output_filename
+        if(ios /= 0) call throw_error('Could not read command line argument "-esp"')
+    end if
+
 end do
 
 vdw_grid_min_cutoff = 1.2_rp
@@ -307,7 +315,7 @@ RMSE_a1 = rmse_qtot(charges(1:qdim))
 write(*,'(A30,2ES23.9,I10)') "Error", RMSE_a1*hartree2kcal
 
 call write_xyz_file(charges(1:qdim),filename="refined.xyz")
-
+call write_xyz_file(charges(1:qdim),filename=output_filename)
 
 contains
 
