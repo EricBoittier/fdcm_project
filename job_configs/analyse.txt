@@ -2,7 +2,7 @@
 gaussian_scan_output =/home/unibas/boittier/RDKit_G2/amide1.pdb/SCAN_1_2_3_4_S_36_10.0/test/SCAN_amide1.pdb.out
 data_path =/data/unibas/boittier/morton-large-control5
 csv_out_name =morton-large-control5.csv
-
+job_type=analysis
 # gaussian_scan_output = "/home/unibas/boittier/RDKit_G2/amide1.pdb/SCAN_1_2_3_4_S_36_10.0/SCAN_amide2.pdb.out"
 # data_path = "/data/unibas/boittier/amide2/"
 # csv_out_name = "amide2.csv"
