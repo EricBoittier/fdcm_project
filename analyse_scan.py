@@ -65,7 +65,7 @@ def analyse(args):
     gaussian_scan_output = args.gaussian_scan_output
     data_path = args.data_path
     csv_out_name = args.csv_out_name
-
+    print(gaussian_scan_output)
     p = cclib.io.ccopen(gaussian_scan_output)
     p = p.parse()
     scan_names = p.scannames
