@@ -97,7 +97,7 @@ def get_path_neighbours(args):
         r = df[df["frame"] == key]
         i = np.array([int(r["a1_"]), int(r["a2_"]), int(r["d1_"])])
 
-        ns = neighbours(i, ranges)
+        ns = get_neighbours(i, ranges)
         frame = key_to_frame(df, i)
         print("visiting: frame_", frame)
         # visited.append(frame)
