@@ -91,7 +91,7 @@ der, des = soap_desc.derivatives(samples, method="analytical", return_descriptor
 
 best_validation = -np.inf
 try:
-    with open("best_score.txt") as f:
+    with open("kernel_data/best_score.txt") as f:
         best_validation = float(f.read())
         print("Best validation score: ", best_validation)
 except FileNotFoundError:
@@ -171,11 +171,11 @@ for i in range(iterations):
 
     if mean_val_score > best_validation:
         print("Saving best model with validation accuracy: ", mean_val_score)
-        with open('best_model.pkl', 'wb') as f:
+        with open('kernel_data/best_model.pkl', 'wb') as f:
             pickle.dump(model, f)
-        with open("best_score.txt", "w") as f:
+        with open("kernel_data/best_score.txt", "w") as f:
             f.write("{}".format(mean_val_score))
         best_validation = mean_val_score
 
-    with open('models.pkl', 'wb') as f:
+    with open('kernel_data/models.pkl', 'wb') as f:
         pickle.dump(models, f)

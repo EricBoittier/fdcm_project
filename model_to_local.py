@@ -31,7 +31,7 @@ def do_transformation(old_global_xyz, cube, frame_file):
 
 
 BOHR_TO_ANGSTROM = 0.529177
-model = pd.read_pickle(r"best_model.pkl")
+model = pd.read_pickle(r"kernel_data/best_model.pkl")
 
 
 def z_to_char(z):
