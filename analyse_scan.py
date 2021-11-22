@@ -81,6 +81,7 @@ def get_path_neighbours(args):
     frames = []
 
     for frame in range(len(a1)):
+        frames.append(frame)
         a1_.append(a1[frame])
         a2_.append(a2[frame])
         d1_.append(d1[frame])
