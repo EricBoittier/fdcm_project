@@ -10,8 +10,8 @@ from job_maker import template_concerted, template_scan, template_morton, templa
 def template_neighbours(args):
     paths, neighbours = get_path_neighbours(args)
 
-    if not os.path.exists(args.jobs_folder):
-        os.makedirs(args.jobs_folder)
+    if not os.path.exists(args.job_folder):
+        os.makedirs(args.job_folder)
 
     n_jobs = len(paths)
 
