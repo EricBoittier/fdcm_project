@@ -18,13 +18,12 @@ def template_neighbours(args):
     for i, (path, neighbour) in enumerate(zip(paths, neighbours)):
         if i < n_jobs - 1:
             is_first = (i == 0)
-            # print(i, path, neighbour)
+            print(i, path, neighbour)
             tmp_str = template_fit(args, paths[i], paths[i+1], first=is_first)
             f = open(os.path.join(args.job_folder, f"frame_{paths[i]}_{paths[i+1]}.sh"), "w")
             f.write(tmp_str)
 
             for n in neighbour:
-                print(n)
                 tmp_str = template_fit(args, paths[i], n)
                 _fpath = os.path.join(args.job_folder, f"frame_{paths[i]}_{n}.sh")
                 f_ = open(_fpath, "w")
