@@ -48,7 +48,7 @@ $cubefit -v -generate -esp $esp -dens $dens  -xyz refined.xyz > cubemaking.log
 # do analysis
 $cubefit -v -analysis -esp $esp -esp2 $n_charges'charges.cube' -dens  $dens > analysis.log
 
-initial_fit=../$dir'/refined.xyz'
+initial_fit=$output_name
 cd ..
 
 dir='frame_'$next

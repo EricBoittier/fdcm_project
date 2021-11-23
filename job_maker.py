@@ -50,7 +50,7 @@ def template_morton(args):
     return output
 
 
-def template_fit(args, start_frame, next_frame, first=False):
+def template_fit(args, start_frame, next_frame, prev_frame=None, first=False):
     if first:
         TEMPLATE = FF_TEMPLATE
     else:
@@ -61,5 +61,5 @@ def template_fit(args, start_frame, next_frame, first=False):
                              n_steps=args.n_steps, scan_name=args.scan_name, cubes_dir=args.cubes_dir,
                              output_dir=args.output_dir, frames=args.frames, initial_fit=args.initial_fit,
                              initial_fit_cube=args.initial_fit_cube, n_scan_points=args.n_scan_points,
-                             start_frame=start_frame, next_frame=next_frame)
+                             start_frame=start_frame, next_frame=next_frame, prev_frame=prev_frame)
     return output

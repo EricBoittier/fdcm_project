@@ -20,6 +20,7 @@ output_dir={{output_dir}}
 frames={{frames}}
 initial_fit={{initial_fit}}
 initial_fit_cube={{initial_fit_cube}}
+prev_frame={{prev_frame}}
 start_frame={{start_frame}}
 next_frame={{next_frame}}
 
@@ -27,6 +28,7 @@ start=$start_frame
 next=$next_frame
 dir='frame_'$start
 output_name=$output_dir/$dir/$dir'-'$start'-'$next'.xyz'
+
 #  Go to the output directory
 mkdir -p $output_dir
 cd $output_dir
@@ -35,10 +37,16 @@ mkdir -p $dir
 cd $dir
 # Do Initial Fit
 #  for initial fit
+esp1=$cubes_dir/$scan_name$start$suffix'.p.cube'
+dens1=$cubes_dir/$scan_name$start$suffix'.d.cube'
 esp=$cubes_dir/$scan_name$next$suffix'.p.cube'
 dens=$cubes_dir/$scan_name$next$suffix'.d.cube'
+
+'frame_1-0-1.xyz.global'
+
+
 # adjust reference frame
-python $ars $initial_fit $initial_fit_cube.d.cube  $esp $frames $output_name > ARS.log
+python $ars $initial_fit $dens1 $dens $frames $output_name > ARS.log
 # do gradient descent fit
 $fdcm -xyz $output_name.global -dens $dens -esp  $esp -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 -output $output_name > GD.log
 python $ars $output_name $esp  $esp $frames $output_name > ARS.log
