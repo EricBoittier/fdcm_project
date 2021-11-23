@@ -61,12 +61,12 @@ def get_local_charges(path):
 
 def get_path_neighbours(args):
     gaussian_scan_output = args.gaussian_scan_output
-    print(gaussian_scan_output)
+    # print(gaussian_scan_output)
     p = cclib.io.ccopen(gaussian_scan_output)
     p = p.parse()
     scan_names = p.scannames
     scan_parms = np.array(p.scanparm)
-    print(scan_parms)
+    # print(scan_parms)
 
     a1 = [x // 1 for x in scan_parms[0]]
     a2 = [x // 1 for x in scan_parms[1]]
@@ -90,7 +90,7 @@ def get_path_neighbours(args):
     df = pd.DataFrame({"frame": frames, "a1": a1_, "a2": a2_, "d1": d1_})
     df = add_key_int(df)
     ranges = [[0, len(set(a1_))], [0, len(set(a2))], [0, len(set(d1))]]
-
+    print(ranges)
     path = []
     neighbours = []
 
