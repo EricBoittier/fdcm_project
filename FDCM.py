@@ -1,15 +1,25 @@
 import argparse
 import configparser
+import os
 import sys
 
 from analyse_scan import analyse, get_path_neighbours
-from job_maker import template_concerted, template_scan, template_morton
+from job_maker import template_concerted, template_scan, template_morton, template_fit
 
 
 def template_neighbours(args):
     paths, neighbours = get_path_neighbours(args)
+
+    if not os.path.exists(args.jobs_folder):
+        os.makedirs(args.jobs_folder)
+
+    n_jobs = len(paths)
+
     for i, (path, neighbour) in enumerate(zip(paths, neighbours)):
-        print(i, path, neighbour)
+        if i == 0:
+            print(i, path, neighbour)
+            tmp_str = template_fit(args, path[i], path[i+1], first=True)
+            print(tmp_str)
 
 
 def main(argv=None):

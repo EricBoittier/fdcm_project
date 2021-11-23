@@ -50,21 +50,16 @@ def template_morton(args):
     return output
 
 
-def template_first_fit(args):
-    output = FF_TEMPLATE.render(cubefit_path=args.cubefit_path, fdcm_path=args.fdcm_path, ars_path=args.ars_path,
-                                n_charges=args.n_charges, suffix=args.suffix,
-                                n_steps=args.n_steps, scan_name=args.scan_name, cubes_dir=args.cubes_dir,
-                                output_dir=args.output_dir, frames=args.frames, initial_fit=args.initial_fit,
-                                initial_fit_cube=args.initial_fit_cube, n_scan_points=args.n_scan_points,
-                                start_frame=args.start_frame, next_frame=args.next_frame)
-    return output
+def template_fit(args, start_frame, next_frame, first=False):
+    if first:
+        TEMPLATE = FF_TEMPLATE
+    else:
+        TEMPLATE = F_TEMPLATE
 
-
-def template_following_fit(args):
-    output = F_TEMPLATE.render(cubefit_path=args.cubefit_path, fdcm_path=args.fdcm_path, ars_path=args.ars_path,
-                               n_charges=args.n_charges, suffix=args.suffix,
-                               n_steps=args.n_steps, scan_name=args.scan_name, cubes_dir=args.cubes_dir,
-                               output_dir=args.output_dir, frames=args.frames, initial_fit=args.initial_fit,
-                               initial_fit_cube=args.initial_fit_cube, n_scan_points=args.n_scan_points,
-                               start_frame=args.start_frame, next_frame=args.next_frame)
+    output = TEMPLATE.render(cubefit_path=args.cubefit_path, fdcm_path=args.fdcm_path, ars_path=args.ars_path,
+                             n_charges=args.n_charges, suffix=args.suffix,
+                             n_steps=args.n_steps, scan_name=args.scan_name, cubes_dir=args.cubes_dir,
+                             output_dir=args.output_dir, frames=args.frames, initial_fit=args.initial_fit,
+                             initial_fit_cube=args.initial_fit_cube, n_scan_points=args.n_scan_points,
+                             start_frame=start_frame, next_frame=next_frame)
     return output
