@@ -34,12 +34,13 @@ mkdir -p $dir
 cd $dir
 # Do Initial Fit
 #  for initial fit
+output_name=$output_dir/$dir/$dir'-'$start'-'$next'.xyz'
 esp=$cubes_dir/$scan_name'0'$suffix'.p.cube'
 dens=$cubes_dir/$scan_name'0'$suffix'.d.cube'
 # adjust reference frame
 python $ars $initial_fit $initial_fit_cube.d.cube  $esp $frames 0_fit.xyz > ARS.log
 # do gradient descent fit
-$fdcm -xyz 0_fit.xyz.global -dens $dens -esp  $esp -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 > GD.log
+$fdcm -xyz 0_fit.xyz.global -dens $dens -esp  $esp -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 -output $output_name > GD.log
 # make a cube file for the fit
 $cubefit -v -generate -esp $esp -dens $dens  -xyz refined.xyz > cubemaking.log
 # do analysis
@@ -58,7 +59,7 @@ cd $dir
 
 python $ars $initial_fit $cubes_dir/$scan_name'0'$suffix'.d.cube' $dens $frames $output_name > ARS.log
 cp $output_name'.global' refined.xyz
-$fdcm -xyz refined.xyz -dens $dens -esp $esp  -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 > GD.log
+$fdcm -xyz refined.xyz -dens $dens -esp $esp  -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 -output $output_name > GD.log
 cp refined.xyz $next'_final.xyz'
 # re-adjust to local
 python $ars refined.xyz $initial_fit_cube.d.cube $dens $frames refined.xyz > ARS-2.log
