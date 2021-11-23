@@ -19,12 +19,16 @@ def template_neighbours(args):
         if i == 0:
             # print(i, path, neighbour)
             tmp_str = template_fit(args, paths[i], paths[i+1], first=True)
-            f = open(os.path.join(args.job_folder, f"frame_{path[i]}_{path[i+1]}.sh"))
+            f = open(os.path.join(args.job_folder, f"frame_{paths[i]}_{paths[i+1]}.sh"))
             f.write(tmp_str)
 
             for n in neighbour:
                 tmp_str = template_fit(args, paths[i], n)
-                f_.write()
+                f_ = open(os.path.join(args.job_folder, f"frame_{paths[i]}_{n}.sh"))
+                f_.write(tmp_str)
+                f_.close()
+                sys.exit(0)
+                pass
 
 
         elif i < n_jobs:
