@@ -93,7 +93,7 @@ def get_path_neighbours(args):
     # print(ranges)
     path = []
     neighbours = []
-
+    visited = []
     for key, j in enumerate(range(len(frames))):
         r = df[df["frame"] == key]
         i = np.array([int(r["a1_"]), int(r["a2_"]), int(r["d1_"])])
@@ -102,9 +102,10 @@ def get_path_neighbours(args):
         frame = key_to_frame(df, i)
         # print("visiting: frame_", frame)
         # print(ns)
-        # visited.append(frame)
+        visited.append(frame)
 
         n = [key_to_frame(df, ii) for ii in ns]
+        n = [ns for ns in n if ns not in visited]
         neighbours.append(n)
         path.append(key)
 
