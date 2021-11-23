@@ -18,7 +18,7 @@ def template_neighbours(args):
     for i, (path, neighbour) in enumerate(zip(paths, neighbours)):
         if i == 0:
             print(i, path, neighbour)
-            tmp_str = template_fit(args, path[i], path[i+1], first=True)
+            tmp_str = template_fit(args, paths[i], paths[i+1], first=True)
             print(tmp_str)
 
 
