@@ -37,6 +37,7 @@ def key_to_frame(df, i):
     _ = df[df["a1_"] == i[0]]
     _ = _[_["a2_"] == i[1]]
     _ = _[_["d1_"] == i[2]]
+    print(_)
     return int(list(_["frame"])[0])
 
 
