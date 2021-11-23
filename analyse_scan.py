@@ -101,7 +101,9 @@ def get_path_neighbours(args):
         ns = get_neighbours(i, ranges)
         frame = key_to_frame(df, i)
 
+        #  don't go back and scan the previous frame
         visited.append(frame)
+        #  don't go forward and scan the next frame
         visited.append(frame+1)
 
         n = [key_to_frame(df, ii) for ii in ns]

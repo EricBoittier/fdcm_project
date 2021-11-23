@@ -26,7 +26,7 @@ next_frame={{next_frame}}
 
 start=$start_frame
 next=$next_frame
-dir='frame_'$start
+dir='frame_'$next
 output_name=$output_dir/$dir/$dir'-'$start'-'$next'.xyz'
 
 #  Go to the output directory
@@ -41,9 +41,6 @@ esp1=$cubes_dir/$scan_name$start$suffix'.p.cube'
 dens1=$cubes_dir/$scan_name$start$suffix'.d.cube'
 esp=$cubes_dir/$scan_name$next$suffix'.p.cube'
 dens=$cubes_dir/$scan_name$next$suffix'.d.cube'
-
-'frame_1-0-1.xyz.global'
-
 
 # adjust reference frame
 python $ars $initial_fit $dens1 $dens $frames $output_name > ARS.log

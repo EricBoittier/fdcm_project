@@ -28,7 +28,7 @@ def template_neighbours(args):
                 f_ = open(os.path.join(args.job_folder, f"frame_{paths[i]}_{n}.sh"), "w")
                 f_.write(tmp_str)
                 f_.close()
-                sys.exit(0)
+                # sys.exit(0)
                 pass
 
 
