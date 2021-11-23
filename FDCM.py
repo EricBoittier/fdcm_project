@@ -23,6 +23,7 @@ def template_neighbours(args):
             f.write(tmp_str)
 
             for n in neighbour:
+                print(n)
                 tmp_str = template_fit(args, paths[i], n)
                 f_ = open(os.path.join(args.job_folder, f"frame_{paths[i]}_{n}.sh"), "w")
                 f_.write(tmp_str)
