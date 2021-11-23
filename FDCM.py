@@ -7,10 +7,9 @@ from job_maker import template_concerted, template_scan, template_morton
 
 
 def template_neighbours(args):
-    path, neighbours = get_path_neighbours(args)
-    print(path)
-    print(neighbours)
-    return
+    paths, neighbours = get_path_neighbours(args)
+    for i, path, neighbour in enumerate(zip(paths, neighbours)):
+        print(i, path, neighbour)
 
 
 def main(argv=None):
