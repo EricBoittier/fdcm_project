@@ -51,3 +51,5 @@ python $ars $output_name $esp  $esp $frames $output_name > ARS.log
 $cubefit -v -generate -esp $esp -dens $dens  -xyz refined.xyz > cubemaking.log
 # do analysis
 $cubefit -v -analysis -esp $esp -esp2 $n_charges'charges.cube' -dens  $dens > analysis.log
+echo $PWD
+
