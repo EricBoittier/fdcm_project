@@ -108,6 +108,8 @@ def get_path_neighbours(args):
         neighbours.append(n)
         path.append(key)
 
+    return path, neighbours
+
 
 def analyse(args):
     gaussian_scan_output = args.gaussian_scan_output
