@@ -89,7 +89,7 @@ def get_path_neighbours(args):
 
     df = pd.DataFrame({"frame": frames, "a1": a1_, "a2": a2_, "d1": d1_})
     df = add_key_int(df)
-    ranges = [[0, len(set(a1_) - 1)], [0, len(set(a2_)) - 1], [0, len(set(d1_)) - 1]]
+    ranges = [[0, len(set(a1_)) - 1], [0, len(set(a2_)) - 1], [0, len(set(d1_)) - 1]]
     print(ranges)
     path = []
     neighbours = []
