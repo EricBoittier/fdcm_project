@@ -41,6 +41,8 @@ dens=$cubes_dir/$scan_name'0'$suffix'.d.cube'
 python $ars $initial_fit $initial_fit_cube.d.cube  $esp $frames 0_fit.xyz > ARS.log
 # do gradient descent fit
 $fdcm -xyz 0_fit.xyz.global -dens $dens -esp  $esp -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 -output $output_name > GD.log
+# re-adjust to local
+python $ars $output_name $initial_fit_cube.d.cube $dens $frames $output_name > ARS-2.log
 # make a cube file for the fit
 $cubefit -v -generate -esp $esp -dens $dens  -xyz refined.xyz > cubemaking.log
 # do analysis
@@ -62,7 +64,7 @@ cp $output_name'.global' refined.xyz
 $fdcm -xyz refined.xyz -dens $dens -esp $esp  -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 -output $output_name > GD.log
 cp refined.xyz $next'_final.xyz'
 # re-adjust to local
-python $ars refined.xyz $initial_fit_cube.d.cube $dens $frames refined.xyz > ARS-2.log
+python $ars $output_name $initial_fit_cube.d.cube $dens $frames $output_name > ARS-2.log
 # make a cube file for the fit
 $cubefit -v -generate -dens $dens -esp $esp  -xyz refined.xyz > cubemaking.log
 # do analysis
