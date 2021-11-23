@@ -102,6 +102,7 @@ def get_path_neighbours(args):
         frame = key_to_frame(df, i)
 
         visited.append(frame)
+        visited.append(frames+1)
 
         n = [key_to_frame(df, ii) for ii in ns]
         print(n)
