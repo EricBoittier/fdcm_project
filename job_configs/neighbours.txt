@@ -5,7 +5,7 @@ fdcm_path=/home/unibas/boittier/fdcm_project/fdcm.x
 ars_path=/home/unibas/boittier/fdcm_project/ARS.py
 
 gaussian_scan_output =/home/unibas/boittier/RDKit_G2/amide1.pdb/SCAN_1_2_3_4_S_36_10.0/test/SCAN_amide1.pdb.out
-jobs_folder=/home/unibas/boittier/fdcm_project/test-neighbours
+job_folder=/home/unibas/boittier/fdcm_project/test-neighbours
 
 data_path =/data/unibas/boittier/morton-large-control5
 csv_out_name =morton-large-control5.csv
