@@ -162,7 +162,7 @@ def analyse(args):
                        x.__contains__("local")]
 
         for local in local_files:
-            local_file_names.append(local)
+            local_file_names.append(local.split("/")[-1])
             local_charges.append(get_local_charges(local))
             result = open(f).readlines()[-1].split()[1]
             frame = int(f.split("/")[-2].split("_")[1])
