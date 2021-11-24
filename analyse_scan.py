@@ -180,7 +180,7 @@ def analyse(args):
     print(lc_df)
     # adding energies
     print(frames, len(a1_), len(a2_), len(d1_), len(frames))
-    df = pd.DataFrame({"frame": frames, "energy": energies, "local_file" : local_file_names, "error": errors, "a1": a1_, "a2": a2_, "d1": d1_})
+    df = pd.DataFrame({"frame": frames, "energy": [x - min(energies) for x in energies], "local_file" : local_file_names, "error": errors, "a1": a1_, "a2": a2_, "d1": d1_})
     df = df.join(lc_df)
     print(df)
     df = add_key_int(df)
