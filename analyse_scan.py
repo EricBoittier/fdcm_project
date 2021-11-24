@@ -124,6 +124,7 @@ def analyse(args):
     scan_names = p.scannames
     scan_parms = np.array(p.scanparm)
     print(scan_parms)
+    scan_energies = p.scanenergies
 
     a1 = [x // 1 for x in scan_parms[0]]
     a2 = [x // 1 for x in scan_parms[1]]
@@ -176,7 +177,7 @@ def analyse(args):
     lc_df = pd.DataFrame(local_charges)
     print(lc_df)
     print(frames, len(a1_), len(a2_), len(d1_), len(frames))
-    df = pd.DataFrame({"frame": frames, "local_file" : local_file_names, "error": errors, "a1": a1_, "a2": a2_, "d1": d1_})
+    df = pd.DataFrame({"frame": frames, "energy": scan_energies, "local_file" : local_file_names, "error": errors, "a1": a1_, "a2": a2_, "d1": d1_})
     df = df.join(lc_df)
     print(df)
     df = add_key_int(df)
