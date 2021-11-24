@@ -153,6 +153,7 @@ def analyse(args):
     a2_ = []
     d1_ = []
     local_charges = []
+    local_file_names = []
 
     for frame_dir in frame_directories:
         f = os.path.join(frame_dir, "GD.log")
@@ -161,6 +162,7 @@ def analyse(args):
                        x.__contains__("local")]
 
         for local in local_files:
+            local_file_names.append(local)
             local_charges.append(get_local_charges(local))
             result = open(f).readlines()[-1].split()[1]
             frame = int(f.split("/")[-2].split("_")[1])
@@ -174,7 +176,7 @@ def analyse(args):
     lc_df = pd.DataFrame(local_charges)
     print(lc_df)
     print(frames, len(a1_), len(a2_), len(d1_), len(frames))
-    df = pd.DataFrame({"frame": frames, "error": errors, "a1": a1_, "a2": a2_, "d1": d1_})
+    df = pd.DataFrame({"frame": frames, "local_file" : local_file_names, "error": errors, "a1": a1_, "a2": a2_, "d1": d1_})
     df = df.join(lc_df)
     print(df)
     df = add_key_int(df)
