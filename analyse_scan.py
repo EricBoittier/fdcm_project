@@ -159,7 +159,7 @@ def analyse(args):
         f = os.path.join(frame_dir, "GD.log")
 
         local_files = [os.path.join(frame_dir, x) for x in os.listdir(frame_dir) if
-                       x.__contains__("local")]
+                       x.__contains__("local") and x.__contains__("frame")]
 
         for local in local_files:
             local_file_names.append(local.split("/")[-1])
