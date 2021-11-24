@@ -51,7 +51,7 @@ def main(argv=None):
         output = template_morton(args)
     elif args.job_type == "neighbours":
         output = template_neighbours(args)
-    elif args.job_type == "analysis":
+    elif args.job_type == "analyse":
         analyse(args)
     else:
         print("No job type specified")
