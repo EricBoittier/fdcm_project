@@ -9,7 +9,8 @@ job_folder=/home/unibas/boittier/fdcm_project/job_files/test-neighbours
 
 data_path =/data/unibas/boittier/morton-large-control5
 csv_out_name =morton-large-control5.csv
-job_type=analyse #neighbours
+job_type=analyse
+#neighbours
 n_steps=2
 n_charges=24
 scan_name=SCAN_amide1.pdb-
