@@ -1,10 +1,9 @@
 import argparse
 import configparser
-import os
 import sys
 
-from analyse_scan import analyse, get_path_neighbours
-from job_maker import template_concerted, template_scan, template_morton, template_fit, template_neighbours
+from analyse_scan import analyse
+from job_maker import template_concerted, template_scan, template_morton, template_neighbours
 
 
 def main(argv=None):
