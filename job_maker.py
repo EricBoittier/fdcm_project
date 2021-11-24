@@ -3,6 +3,8 @@ import os
 import jinja2
 from jinja2 import StrictUndefined
 
+from analyse_scan import get_path_neighbours
+
 """
 Templates
 """
@@ -63,3 +65,34 @@ def template_fit(args, start_frame, next_frame, prev_frame=None, first=False):
                              initial_fit_cube=args.initial_fit_cube, n_scan_points=args.n_scan_points,
                              start_frame=start_frame, next_frame=next_frame, prev_frame=prev_frame)
     return output
+
+
+def template_neighbours(args):
+    paths, neighbours = get_path_neighbours(args)
+
+    if not os.path.exists(args.job_folder):
+        os.makedirs(args.job_folder)
+
+    n_jobs = len(paths)
+
+    for i, (path, neighbour) in enumerate(zip(paths, neighbours)):
+        if i < n_jobs - 1:
+            is_first = (i == 0)
+            print(i, path, neighbour)
+            tmp_str = template_fit(args, paths[i], paths[i + 1], first=is_first)
+            f = open(os.path.join(args.job_folder, f"frame_{paths[i]}_{paths[i + 1]}.sh"), "w")
+            f.write(tmp_str)
+
+            for n in neighbour:
+                tmp_str = template_fit(args, paths[i], n)
+                _fpath = os.path.join(args.job_folder, f"frame_{paths[i]}_{n}.sh")
+                f_ = open(_fpath, "w")
+                f_.write(tmp_str)
+                f_.close()
+                f.write(f"sbatch {_fpath} \n")
+            try:
+                next_job = os.path.join(args.job_folder, f"frame_{paths[i + 1]}_{paths[i + 2]}.sh")
+                f.write(f"sbatch {next_job} \n")
+            except IndexError:
+                pass
+            f.close()

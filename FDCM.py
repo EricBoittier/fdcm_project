@@ -4,38 +4,7 @@ import os
 import sys
 
 from analyse_scan import analyse, get_path_neighbours
-from job_maker import template_concerted, template_scan, template_morton, template_fit
-
-
-def template_neighbours(args):
-    paths, neighbours = get_path_neighbours(args)
-
-    if not os.path.exists(args.job_folder):
-        os.makedirs(args.job_folder)
-
-    n_jobs = len(paths)
-
-    for i, (path, neighbour) in enumerate(zip(paths, neighbours)):
-        if i < n_jobs - 1:
-            is_first = (i == 0)
-            print(i, path, neighbour)
-            tmp_str = template_fit(args, paths[i], paths[i+1], first=is_first)
-            f = open(os.path.join(args.job_folder, f"frame_{paths[i]}_{paths[i+1]}.sh"), "w")
-            f.write(tmp_str)
-
-            for n in neighbour:
-                tmp_str = template_fit(args, paths[i], n)
-                _fpath = os.path.join(args.job_folder, f"frame_{paths[i]}_{n}.sh")
-                f_ = open(_fpath, "w")
-                f_.write(tmp_str)
-                f_.close()
-                f.write(f"sbatch {_fpath} \n")
-            try:
-                next_job = os.path.join(args.job_folder, f"frame_{paths[i+1]}_{paths[i + 2]}.sh")
-                f.write(f"sbatch {next_job} \n")
-            except IndexError:
-                pass
-            f.close()
+from job_maker import template_concerted, template_scan, template_morton, template_fit, template_neighbours
 
 
 def main(argv=None):
