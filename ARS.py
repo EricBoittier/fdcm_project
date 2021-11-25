@@ -234,7 +234,7 @@ class ARS():
         charge_atom_associations = []
         atom_charge_dict = {}
         for i, line in enumerate(f):
-            a, c = line.split()
+            c, a = line.split()
             c_a = [int(c), int(a)]
             charge_atom_associations.append(c_a)
             c = c_a[0]
