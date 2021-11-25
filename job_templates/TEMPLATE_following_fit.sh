@@ -55,3 +55,7 @@ $cubefit -v -generate -esp $esp -dens $dens  -xyz refined.xyz > cubemaking.log
 $cubefit -v -analysis -esp $esp -esp2 $n_charges'charges.cube' -dens  $dens > analysis.log
 echo $PWD
 
+
+
+
+

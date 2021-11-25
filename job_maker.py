@@ -89,11 +89,11 @@ def template_neighbours(args, do_neighbours=True):
                     f_ = open(_fpath, "w")
                     f_.write(tmp_str)
                     f_.close()
-                    f.write(f"sbatch {_fpath} \n")
+                    f.write(f"\nsbatch {_fpath} \n")
 
             try:
                 next_job = os.path.join(args.job_folder, f"frame_{paths[i + 1]}_{paths[i + 2]}.sh")
-                f.write(f"sbatch {next_job} \n")
+                f.write(f"\nsbatch {next_job} \n")
             except IndexError:
                 pass
 
