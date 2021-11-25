@@ -65,7 +65,7 @@ cp $output_name'.global' refined.xyz
 $fdcm -xyz refined.xyz -dens $dens -esp $esp  -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 -output $output_name > $output_name.GD.log
 cp refined.xyz $next'_final.xyz'
 # re-adjust to local
-python $ars -charges $output_name -pcube $initial_fit_cube.d.cube -pcube2 $dens -frames $frames -output $output_name -acd $acd > $output_name.ARS-2.log
+python $ars -charges $output_name -pcube $dens -pcube2 $dens -frames $frames -output $output_name -acd $acd > $output_name.ARS-2.log
 # make a cube file for the fit
 $cubefit -v -generate -dens $dens -esp $esp  -xyz refined.xyz > $output_name.cubemaking.log
 # do analysis
