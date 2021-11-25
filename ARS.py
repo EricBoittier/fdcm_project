@@ -35,10 +35,6 @@ def dihedral2(p):
     return np.degrees(np.arctan2(y, x))
 
 
-def usage():
-    pass
-
-
 def read_cube_file(filepath):
     pcube_data, pcube_meta = read_cube(filepath)
     ap = []
@@ -205,7 +201,7 @@ class ARS():
         #  Match charges to closest atoms
         self.charge_atom_associations, self.atom_charge_dict = self.match_charges()
         print(self.charge_atom_associations)
-        self.save_charge_atom_associations()
+
 
         # Calculate local axes and transform charges
         # Calculate the new axes for each frame
@@ -224,8 +220,8 @@ class ARS():
         if pcube_2 is not None:
             self.charge_positions_plus = self.local_to_global()
 
-    def save_charge_atom_associations(self):
-        f = open("atom_c_dict.txt", "w")
+    def save_charge_atom_associations(self, filename="out.acd"):
+        f = open(filename+".acd", "w")
         for charge, atom in self.charge_atom_associations:
             f.write(f"{charge} {atom} \n")
         f.close()
@@ -371,9 +367,6 @@ class ARS():
         return charge_atom_associations, atom_charge_dict
 
     def global_to_local(self):
-        """
-        Global ==> Local
-        """
         #  Find the position of the charges in the local axes
         #  Create a new array for the 'local' charges
         c_pos_shape = np.array(self.c_positions).shape
@@ -431,9 +424,6 @@ class ARS():
         return Kabsch.align_vectors(self.atom_positions, self.atom_positions_plus)[1]
 
     def local_to_global(self):
-        """
-        Local ==> Global
-        """
         #  Find the position of the charges in the local axes
         #  Create a new array for the 'local' charges
         c_pos_shape = np.array(self.c_positions).shape
@@ -473,7 +463,6 @@ if __name__ == "__main__":
     """ 
     ARS.py charges.xyz cubefile_1.cub cubefile_2.cub frames.txt output_filename.xyz
     """
-
     xyz_file_name = sys.argv[1]
     pcube = sys.argv[2]
     pcube_2 = sys.argv[3]
@@ -487,8 +476,10 @@ if __name__ == "__main__":
     ARS_obj = ARS(xyz_file_name, pcube, frame_file, pcube_2=pcube_2, method="bond")
     ARS_obj.save_charges_global(output_filename)
     ARS_obj.save_charges_local(output_filename)
-    print(f"Distance between Atom configurations = {ARS_obj.get_distance_atoms()}")
-    print(f"Distance between Charge configurations = {ARS_obj.get_distance_charges()}")
+    ARS_obj.save_charge_atom_associations(filename=output_filename)
+
+    print(f"RMSD_ATOMS = {ARS_obj.get_distance_atoms()}")
+    print(f"RMSD_CHARGES = {ARS_obj.get_distance_charges()}")
 
     if dih:
         dihedral = ARS_obj.get_dih_2(*dih)
