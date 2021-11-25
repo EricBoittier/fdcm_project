@@ -67,7 +67,7 @@ def template_fit(args, start_frame, next_frame, prev_frame=None, first=False):
     return output
 
 
-def template_neighbours(args):
+def template_neighbours(args, do_neighbours=True):
     paths, neighbours = get_path_neighbours(args)
 
     if not os.path.exists(args.job_folder):
