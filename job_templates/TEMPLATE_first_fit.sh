@@ -38,15 +38,15 @@ output_name=$output_dir/$dir/$dir'-'$start'-'$next'.xyz'
 esp=$cubes_dir/$scan_name'0'$suffix'.p.cube'
 dens=$cubes_dir/$scan_name'0'$suffix'.d.cube'
 # adjust reference frame
-python $ars -charges $initial_fit -pcube $initial_fit_cube.d.cube  -pcube2 $esp -frames $frames -output 0_fit.xyz -acd $acd > ARS.log
+python $ars -charges $initial_fit -pcube $initial_fit_cube.d.cube  -pcube2 $esp -frames $frames -output 0_fit.xyz -acd $acd > $output_name.ARS.log
 # do gradient descent fit
-$fdcm -xyz 0_fit.xyz.global -dens $dens -esp  $esp -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 -output $output_name  > GD.log
+$fdcm -xyz 0_fit.xyz.global -dens $dens -esp  $esp -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 -output $output_name  > $output_name.GD.log
 # re-adjust to local
-python $ars -charges $output_name -pcube $initial_fit_cube.d.cube -pcube2 $dens -frames $frames -output $output_name -acd $acd > ARS-2.log
+python $ars -charges $output_name -pcube $initial_fit_cube.d.cube -pcube2 $dens -frames $frames -output $output_name -acd $acd > $output_name.ARS-2.log
 # make a cube file for the fit
-$cubefit -v -generate -esp $esp -dens $dens  -xyz refined.xyz > cubemaking.log
+$cubefit -v -generate -esp $esp -dens $dens  -xyz refined.xyz > $output_name.cubemaking.log
 # do analysis
-$cubefit -v -analysis -esp $esp -esp2 $n_charges'charges.cube' -dens  $dens > analysis.log
+$cubefit -v -analysis -esp $esp -esp2 $n_charges'charges.cube' -dens  $dens > $output_name.analysis.log
 
 initial_fit=$output_name
 cd ..
@@ -60,16 +60,16 @@ mkdir -p $dir
 cd $dir
 
 # Adjust reference frame
-python $ars -charges $initial_fit -pcube $cubes_dir/$scan_name'0'$suffix'.d.cube' -pcube2 $dens -frames $frames -output $output_name -acd $acd > ARS.log
+python $ars -charges $initial_fit -pcube $cubes_dir/$scan_name'0'$suffix'.d.cube' -pcube2 $dens -frames $frames -output $output_name -acd $acd > $output_name.ARS.log
 cp $output_name'.global' refined.xyz
-$fdcm -xyz refined.xyz -dens $dens -esp $esp  -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 -output $output_name > GD.log
+$fdcm -xyz refined.xyz -dens $dens -esp $esp  -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 -output $output_name > $output_name.GD.log
 cp refined.xyz $next'_final.xyz'
 # re-adjust to local
-python $ars -charges $output_name -pcube $initial_fit_cube.d.cube -pcube2 $dens -frames $frames -output $output_name -acd $acd > ARS-2.log
+python $ars -charges $output_name -pcube $initial_fit_cube.d.cube -pcube2 $dens -frames $frames -output $output_name -acd $acd > $output_name.ARS-2.log
 # make a cube file for the fit
-$cubefit -v -generate -dens $dens -esp $esp  -xyz refined.xyz > cubemaking.log
+$cubefit -v -generate -dens $dens -esp $esp  -xyz refined.xyz > $output_name.cubemaking.log
 # do analysis
-$cubefit -v -analysis -esp $esp -esp2 $n_charges'charges.cube' -dens  $dens > analysis.log
+$cubefit -v -analysis -esp $esp -esp2 $n_charges'charges.cube' -dens  $dens > $output_name.analysis.log
 
 echo $PWD
 

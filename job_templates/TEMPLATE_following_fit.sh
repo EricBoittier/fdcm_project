@@ -44,15 +44,15 @@ esp=$cubes_dir/$scan_name$next$suffix'.p.cube'
 dens=$cubes_dir/$scan_name$next$suffix'.d.cube'
 
 # adjust reference frame
-python $ars -charges $initial_fit -pcube $dens1 -pcube2 $dens -frames $frames -output $output_name -acd $acd > ARS.log
+python $ars -charges $initial_fit -pcube $dens1 -pcube2 $dens -frames $frames -output $output_name -acd $acd > $output_name.ARS.log
 # do gradient descent fit
-$fdcm -xyz $output_name.global -dens $dens -esp  $esp -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 -output $output_name > GD.log
+$fdcm -xyz $output_name.global -dens $dens -esp  $esp -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 -output $output_name > $output_name.GD.log
 # adjust reference frame
-python $ars -charges $output_name -pcube $esp  -pcube2 $esp -frames $frames -output $output_name -acd $acd > ARS.log
+python $ars -charges $output_name -pcube $esp  -pcube2 $esp -frames $frames -output $output_name -acd $acd > $output_name.ARS-2.log
 # make a cube file for the fit
-$cubefit -v -generate -esp $esp -dens $dens  -xyz refined.xyz > cubemaking.log
+$cubefit -v -generate -esp $esp -dens $dens  -xyz refined.xyz > $output_name.cubemaking.log
 # do analysis
-$cubefit -v -analysis -esp $esp -esp2 $n_charges'charges.cube' -dens  $dens > analysis.log
+$cubefit -v -analysis -esp $esp -esp2 $n_charges'charges.cube' -dens  $dens > $output_name.analysis.log
 echo $PWD
 
 
