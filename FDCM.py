@@ -50,7 +50,7 @@ def main(argv=None):
     elif args.job_type == "morton":
         output = template_morton(args)
     elif args.job_type == "neighbours":
-        output = template_neighbours(args)
+        output = template_neighbours(args, do_neighbours=False)
     elif args.job_type == "analyse":
         analyse(args)
     else:
