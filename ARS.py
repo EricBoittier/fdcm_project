@@ -36,13 +36,7 @@ def dihedral2(p):
 
 
 def usage():
-    s = """Take the MDCM charges from a conformation in cubefile_1 and 
-    return the position of the charges (in local, and new global coordinates) 
-    for the second conformation
-
-    ARS.py charges.xyz cubefile_1.cube cubefile_2.cube frames.txt
-    """
-    print(s)
+    pass
 
 
 def read_cube_file(filepath):
@@ -210,6 +204,7 @@ class ARS():
 
         #  Match charges to closest atoms
         self.charge_atom_associations, self.atom_charge_dict = self.match_charges()
+        print(self.charge_atom_associations)
 
         # Calculate local axes and transform charges
         # Calculate the new axes for each frame
@@ -243,21 +238,21 @@ class ARS():
         p = np.array([atoms[a], atoms[b], atoms[c], atoms[d]])
         return dihedral2(p)
 
-    def align_in_global(self, filename_template=None):
-        self.rotation, rmsd = Kabsch.align_vectors(self.atom_positions, self.atom_positions_plus)
-        self.rotation = self.rotation.as_matrix()
-        tmp_atom_positions = self.rotation.dot(self.atom_positions.T).T
-        if filename_template is None:
-            save_xyz(tmp_atom_positions, self.atom_names)
-        else:
-            save_xyz(tmp_atom_positions, self.atom_names, filename=filename_template.format("molecule"))
-        tmp_charge_positions = self.rotation.dot(self.c_positions.T).T
-        if filename_template is None:
-            save_charges(tmp_charge_positions, self.c_charges)
-        else:
-            save_charges(tmp_charge_positions, self.c_charges, filename=filename_template.format("charges"))
-
-        print(rmsd)
+    # def align_in_global(self, filename_template=None):
+    #     self.rotation, rmsd = Kabsch.align_vectors(self.atom_positions, self.atom_positions_plus)
+    #     self.rotation = self.rotation.as_matrix()
+    #     tmp_atom_positions = self.rotation.dot(self.atom_positions.T).T
+    #     if filename_template is None:
+    #         save_xyz(tmp_atom_positions, self.atom_names)
+    #     else:
+    #         save_xyz(tmp_atom_positions, self.atom_names, filename=filename_template.format("molecule"))
+    #     tmp_charge_positions = self.rotation.dot(self.c_positions.T).T
+    #     if filename_template is None:
+    #         save_charges(tmp_charge_positions, self.c_charges)
+    #     else:
+    #         save_charges(tmp_charge_positions, self.c_charges, filename=filename_template.format("charges"))
+    #
+    #     print(rmsd)
 
     def get_c_positions_local(self):
         return self.c_positions_local
