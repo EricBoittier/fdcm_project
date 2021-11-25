@@ -23,6 +23,7 @@ initial_fit_cube={{initial_fit_cube}}
 prev_frame={{prev_frame}}
 start_frame={{start_frame}}
 next_frame={{next_frame}}
+acd={{acd}}
 
 start=$start_frame
 next=$next_frame
