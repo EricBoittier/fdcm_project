@@ -18,7 +18,7 @@ def angle(a, b, c):
     cosine_angle = np.dot(ba, bc) / (np.linalg.norm(ba) * np.linalg.norm(bc))
     a3 = np.degrees(np.arccos(cosine_angle))
     return a3
-    
+
 
 # This is the straightforward approach as outlined in the answers to
 # "How do I calculate a dihedral angle given Cartesian coordinates?"
@@ -205,6 +205,7 @@ class ARS():
         #  Match charges to closest atoms
         self.charge_atom_associations, self.atom_charge_dict = self.match_charges()
         print(self.charge_atom_associations)
+        self.save_charge_atom_associations()
 
         # Calculate local axes and transform charges
         # Calculate the new axes for each frame
@@ -222,12 +223,35 @@ class ARS():
 
         if pcube_2 is not None:
             self.charge_positions_plus = self.local_to_global()
-            
+
+    def save_charge_atom_associations(self):
+        f = open("atom_c_dict.txt", "w")
+        for charge, atom in self.charge_atom_associations:
+            f.write(f"{charge} {atom} \n")
+        f.close()
+
+    def read_charge_atom_associations(self, path):
+        f = open(path).readlines()
+        charge_atom_associations = []
+        atom_charge_dict = {}
+        for i, line in enumerate(f):
+            a, c = line.split()
+            c_a = [int(c), int(a)]
+            charge_atom_associations.append(c_a)
+            c = c_a[0]
+            a = c_a[1]
+            if a not in atom_charge_dict:
+                atom_charge_dict[a] = [c]
+            else:
+                atom_charge_dict[a].append(c)
+        self.charge_atom_associations = charge_atom_associations
+        self.atom_charge_dict = atom_charge_dict
+
     def get_angle(self, a, b, c):
         atoms = self.atom_positions
         p = np.array([atoms[a], atoms[b], atoms[c]])
         return angle(*p)
-        
+
     def get_dih(self, a, b, c, d):
         atoms = self.atom_positions
         p = np.array([atoms[a], atoms[b], atoms[c], atoms[d]])
@@ -309,7 +333,6 @@ class ARS():
 
         plt.show()
 
-
     def plot_axe(self, il, local_vector, atom_index, c="k"):
         atom_pos = self.atom_positions[atom_index]
         x = [atom_pos[0], atom_pos[0] + local_vector[0][0]]
@@ -389,7 +412,7 @@ class ARS():
         # output_filename = "local_" + output_filename_split[-1]
         # output_filename = os.path.join(*output_filename_split[:-1], output_filename)
         save_charges(self.c_positions_local,
-                     self.c_charges, filename=output_filename+".local")
+                     self.c_charges, filename=output_filename + ".local")
 
     def set_charge_positions_plus(self, charge_positions):
         self.charge_positions_plus = charge_positions
@@ -399,7 +422,7 @@ class ARS():
 
     def save_charges_global(self, output_filename):
         save_charges(self.charge_positions_plus,
-                     self.c_charges, filename=output_filename+".global")
+                     self.c_charges, filename=output_filename + ".global")
 
     def get_distance_charges(self):
         return Kabsch.align_vectors(self.charge_positions_plus, self.c_positions)[1]
