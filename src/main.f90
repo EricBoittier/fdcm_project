@@ -316,7 +316,7 @@ RMSE_a1 = rmse_qtot(charges(1:qdim))
 write(*,'(A30,2ES23.9,I10)') "Error", RMSE_a1*hartree2kcal
 
 call write_xyz_file(charges(1:qdim),filename="refined.xyz")
-if (write_output) call write_xyz_file(charges(1:qdim),filename=output_filename)
+call write_xyz_file(charges(1:qdim),filename=output_filename)
 
 contains
 
