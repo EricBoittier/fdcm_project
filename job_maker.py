@@ -84,7 +84,7 @@ def template_neighbours(args, do_neighbours=True):
             f.write(tmp_str)
             if do_neighbours:
                 for n in neighbour:
-                    tmp_str = template_fit(args, paths[i], n)
+                    tmp_str = template_fit(args, paths[i], n, prev_frame=paths[i-1])
                     _fpath = os.path.join(args.job_folder, f"frame_{paths[i]}_{n}.sh")
                     f_ = open(_fpath, "w")
                     f_.write(tmp_str)
