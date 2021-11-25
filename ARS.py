@@ -203,6 +203,7 @@ class ARS():
             self.charge_atom_associations, self.atom_charge_dict = self.match_charges()
         else:
             self.read_charge_atom_associations(atom_charge_match)
+
         print(self.charge_atom_associations)
         print(self.match_charges()[0])
 
