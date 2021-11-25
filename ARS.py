@@ -204,7 +204,7 @@ class ARS():
         else:
             self.read_charge_atom_associations(atom_charge_match)
         print(self.charge_atom_associations)
-
+        print(self.match_charges()[0])
 
         # Calculate local axes and transform charges
         # Calculate the new axes for each frame
