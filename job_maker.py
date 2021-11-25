@@ -79,7 +79,7 @@ def template_neighbours(args, do_neighbours=True):
         if i < n_jobs - 1:
             is_first = (i == 0)
             print(i, path, neighbour)
-            tmp_str = template_fit(args, paths[i], paths[i + 1], first=is_first)
+            tmp_str = template_fit(args, paths[i], paths[i + 1], first=is_first, prev_frame=paths[i-1])
             f = open(os.path.join(args.job_folder, f"frame_{paths[i]}_{paths[i + 1]}.sh"), "w")
             f.write(tmp_str)
             if do_neighbours:
