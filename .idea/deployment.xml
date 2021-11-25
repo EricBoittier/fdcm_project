@@ -5,7 +5,14 @@
       <paths name="boittier@pc-nccr-cluster.chemie.unibas.ch:22 password">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/pycharm_project_51" local="$PROJECT_DIR$" />
+            <mapping deploy="/tmp/pycharm_project_567" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="pc-nccr-cluster">
+        <serverdata>
+          <mappings>
+            <mapping deploy="fdcm_project" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

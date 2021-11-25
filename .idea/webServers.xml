@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="f7ebcabd-550e-49bd-907e-550ccd6cab4d" name="pc-nccr-cluster">
+        <fileTransfer rootFolder="/home/unibas/boittier" accessType="SFTP" host="pc-nccr-cluster.chemie.unibas.ch" port="22" sshConfigId="f0571cd2-2ff1-4eba-a4af-81b529c5e190" sshConfig="boittier@pc-nccr-cluster.chemie.unibas.ch:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
