@@ -1,13 +1,13 @@
-import numpy as np
-from math import atan2
-import os, sys
-from scipy.spatial import distance
+import argparse
+
 import matplotlib.pyplot as plt
+import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
-from scipy.spatial.transform import Rotation as Kabsch
-from Cube import read_cube
-from numpy import (array, dot, arccos, clip)
 from numpy.linalg import norm
+from scipy.spatial import distance
+from scipy.spatial.transform import Rotation as Kabsch
+
+from Cube import read_cube
 
 BOHR_TO_ANGSTROM = 0.529177
 
@@ -167,7 +167,7 @@ def save_charges(charge_positions, charges, filename="out_charges.xyz"):
 
 
 class ARS():
-    def __init__(self, xyz_file_name, pcube, frame_file, pcube_2=None, method="bond"):
+    def __init__(self, xyz_file_name, pcube, frame_file, pcube_2=None, method="bond", atom_charge_match=None):
         self.method = method
         self.c_positions_local = None
         self.c_positions_global = None
@@ -199,7 +199,10 @@ class ARS():
             self.frame_atoms.append([int(a1), int(a2), int(a3)])
 
         #  Match charges to closest atoms
-        self.charge_atom_associations, self.atom_charge_dict = self.match_charges()
+        if atom_charge_match is None:
+            self.charge_atom_associations, self.atom_charge_dict = self.match_charges()
+        else:
+            self.read_charge_atom_associations(atom_charge_match)
         print(self.charge_atom_associations)
 
 
@@ -460,27 +463,28 @@ class ARS():
 
 
 if __name__ == "__main__":
-    """ 
-    ARS.py charges.xyz cubefile_1.cub cubefile_2.cub frames.txt output_filename.xyz
-    """
-    xyz_file_name = sys.argv[1]
-    pcube = sys.argv[2]
-    pcube_2 = sys.argv[3]
-    frame_file = sys.argv[4]
-    output_filename = sys.argv[5]
+    parser = argparse.ArgumentParser(description='ARS')
+    parser.add_argument('-charges', help='.')
+    parser.add_argument('-pcube', help='.')
+    parser.add_argument('-pcube2', help='.', default=None)
+    parser.add_argument('-frames', help='.')
+    parser.add_argument('-output', help='.')
+    parser.add_argument('-acd', help='.', default=None)
 
-    dih = False
-    if len(sys.argv) > 6:
-        dih = [int(x) for x in sys.argv[6].split("_")]
+    args = parser.parse_args()
 
-    ARS_obj = ARS(xyz_file_name, pcube, frame_file, pcube_2=pcube_2, method="bond")
-    ARS_obj.save_charges_global(output_filename)
-    ARS_obj.save_charges_local(output_filename)
-    ARS_obj.save_charge_atom_associations(filename=output_filename)
+    ARS_obj = ARS(args.charges, args.pcube, args.frames, pcube_2=args.pcube2, method="bond", atom_charge_match=args.acd)
+    ARS_obj.save_charges_global(args.output)
+    ARS_obj.save_charges_local(args.output)
+    ARS_obj.save_charge_atom_associations(filename=args.output)
 
     print(f"RMSD_ATOMS = {ARS_obj.get_distance_atoms()}")
     print(f"RMSD_CHARGES = {ARS_obj.get_distance_charges()}")
 
-    if dih:
-        dihedral = ARS_obj.get_dih_2(*dih)
-        print(f"Dihedral {dih} = {dihedral}")
+    # dih = False
+    # if len(sys.argv) > 6:
+    #     dih = [int(x) for x in sys.argv[6].split("_")]
+
+    # if dih:
+    #     dihedral = ARS_obj.get_dih_2(*dih)
+    #     print(f"Dihedral {dih} = {dihedral}")
