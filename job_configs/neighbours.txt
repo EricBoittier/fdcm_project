@@ -16,6 +16,7 @@ n_charges=24
 scan_name=SCAN_amide1.pdb-
 suffix=.xyz.chk
 frames=/home/unibas/boittier/fdcm_project/mdcms/amide/model1/frames.txt
+acd=/home/unibas/boittier/fdcm_project/0_fit.xyz.acd
 initial_fit=/home/unibas/boittier/fdcm_project/mdcms/amide/model1/24_charges_refined.xyz
 initial_fit_cube=/home/unibas/boittier/fdcm_project/mdcms/amide/model1/amide1.pdb.chk
 cubes_dir=/data/unibas/boittier/fdcm/amide/scan-large

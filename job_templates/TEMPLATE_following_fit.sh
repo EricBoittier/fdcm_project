@@ -43,11 +43,11 @@ esp=$cubes_dir/$scan_name$next$suffix'.p.cube'
 dens=$cubes_dir/$scan_name$next$suffix'.d.cube'
 
 # adjust reference frame
-python $ars -charges $initial_fit -pcube $dens1 -pcube2 $dens -frames $frames -output $output_name > ARS.log
+python $ars -charges $initial_fit -pcube $dens1 -pcube2 $dens -frames $frames -output $output_name -acd $acd > ARS.log
 # do gradient descent fit
 $fdcm -xyz $output_name.global -dens $dens -esp  $esp -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 -output $output_name > GD.log
 # adjust reference frame
-python $ars -charges $output_name -pcube $esp  -pcube2 $esp -frames $frames -output $output_name > ARS.log
+python $ars -charges $output_name -pcube $esp  -pcube2 $esp -frames $frames -output $output_name -acd $acd > ARS.log
 # make a cube file for the fit
 $cubefit -v -generate -esp $esp -dens $dens  -xyz refined.xyz > cubemaking.log
 # do analysis

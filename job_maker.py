@@ -63,7 +63,7 @@ def template_fit(args, start_frame, next_frame, prev_frame=None, first=False):
                              n_steps=args.n_steps, scan_name=args.scan_name, cubes_dir=args.cubes_dir,
                              output_dir=args.output_dir, frames=args.frames, initial_fit=args.initial_fit,
                              initial_fit_cube=args.initial_fit_cube, n_scan_points=args.n_scan_points,
-                             start_frame=start_frame, next_frame=next_frame, prev_frame=prev_frame)
+                             start_frame=start_frame, next_frame=next_frame, prev_frame=prev_frame, acd=args.acd)
     return output
 
 
@@ -90,9 +90,11 @@ def template_neighbours(args):
                 f_.write(tmp_str)
                 f_.close()
                 f.write(f"sbatch {_fpath} \n")
+
             try:
                 next_job = os.path.join(args.job_folder, f"frame_{paths[i + 1]}_{paths[i + 2]}.sh")
                 f.write(f"sbatch {next_job} \n")
             except IndexError:
                 pass
+
             f.close()
