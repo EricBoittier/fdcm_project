@@ -158,16 +158,17 @@ def analyse(args):
     energies = []
 
     for frame_dir in frame_directories:
-        f = os.path.join(frame_dir, "GD.log")
 
         local_files = [os.path.join(frame_dir, x) for x in os.listdir(frame_dir) if
                        x.__contains__("local") and x.__contains__("frame")]
 
         for local in local_files:
+            key = local.split(".")[0]
+            GD_file = os.path.join(frame_dir, f"{key}.xyz.GD.log")
             local_file_names.append(local.split("/")[-1])
             local_charges.append(get_local_charges(local))
-            result = open(f).readlines()[-1].split()[1]
-            frame = int(f.split("/")[-2].split("_")[1])
+            result = open(GD_file).readlines()[-1].split()[1]
+            frame = int(GD_file.split("/")[-2].split("_")[1])
             error = float(result)
             frames.append(frame)
             errors.append(error)
@@ -179,8 +180,10 @@ def analyse(args):
     lc_df = pd.DataFrame(local_charges)
     print(lc_df)
     # adding energies
+    energies = [x - min(energies) for x in energies]
     print(frames, len(a1_), len(a2_), len(d1_), len(frames))
-    df = pd.DataFrame({"frame": frames, "energy": [x - min(energies) for x in energies], "local_file" : local_file_names, "error": errors, "a1": a1_, "a2": a2_, "d1": d1_})
+    df = pd.DataFrame({"frame": frames, "energy": energies, "local_file": local_file_names,
+                       "error": errors, "a1": a1_, "a2": a2_, "d1": d1_})
     df = df.join(lc_df)
     print(df)
     df = add_key_int(df)
