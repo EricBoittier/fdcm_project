@@ -109,6 +109,9 @@ def scan_neighbours_schedule_from_anytree_graph(anytree, G):
             pass
 
     scan_children(anytree)
+
+    print_anytree(anytree)
+
     scan_neighbours_schedule = []
     visited = []
     for i in order:
