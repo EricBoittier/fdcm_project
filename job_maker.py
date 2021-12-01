@@ -103,10 +103,11 @@ def template_neighbours_from_2drmsd(args, do_neighbours=True):
         os.makedirs(args.job_folder)
     #  Process the schedule for job writing
     for i, (scan, neighbours, schedule) in enumerate(scan_neighbours_schedule):
-        print(i, scan)
+        print(i, scan, neighbours, schedule)
         is_first = (i == 0)
         previous, start, end = scan
         tmp_str = template_fit(args, start, end, first=is_first, prev_frame=previous)
+
         f = open(os.path.join(args.job_folder, f"frame_{start}_{end}.sh"), "w")
         f.write(tmp_str)
         #  write the neighbour jobs and schedule them
