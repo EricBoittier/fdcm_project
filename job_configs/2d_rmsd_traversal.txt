@@ -1,9 +1,9 @@
 [Defaults]
-output_dir=/data/unibas/boittier/test-neighbours2
 cubefit_path=/home/unibas/boittier/fdcm_project/mdcm_bin/cubefit.x
 fdcm_path=/home/unibas/boittier/fdcm_project/fdcm.x
 ars_path=/home/unibas/boittier/fdcm_project/ARS.py
 
+output_dir=/data/unibas/boittier/amide_graph_2
 job_folder=/home/unibas/boittier/fdcm_project/job_files/amide_graph_2/
 data_path=/data/unibas/boittier/fdcm/amide_graph
 csv_out_name=amide_graph_2.csv
