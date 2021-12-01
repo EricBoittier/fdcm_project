@@ -3,7 +3,8 @@ import configparser
 import sys
 
 from analyse_scan import analyse
-from job_maker import template_concerted, template_scan, template_morton, template_neighbours
+from job_maker import template_concerted, template_scan, template_morton, template_neighbours_from_gaussian_scan, \
+    template_neighbours_from_2drmsd
 
 
 def main(argv=None):
@@ -50,7 +51,9 @@ def main(argv=None):
     elif args.job_type == "morton":
         output = template_morton(args)
     elif args.job_type == "neighbours":
-        output = template_neighbours(args)
+        output = template_neighbours_from_gaussian_scan(args)
+    elif args.job_type == "graph":
+        output = template_neighbours_from_2drmsd(args)
     elif args.job_type == "analyse":
         analyse(args)
     else:

@@ -8,7 +8,7 @@ def schedule_from_2drmsd(filename):
     two_d_rmsd_data = load_adjacency_matrix(filename)
     # Sparsify matrix based on RMSD cut off
     two_d_rmsd_data_sparse = sparsify_matrix(two_d_rmsd_data)
-    # Graph and visting list
+    # Graph and visiting list
     G, visited = find_paths_from_adjacency(two_d_rmsd_data_sparse)
     # Using anytree package for Tree data struct.
     anytree = list_to_anytree(visited)
@@ -109,13 +109,17 @@ def scan_neighbours_schedule_from_anytree_graph(anytree, G):
             pass
 
     scan_children(anytree)
-
     scan_neighbours_schedule = []
-
+    visited = []
     for i in order:
-        scan = tuple(i)
-        neighbours = [x for x in G.edges(i[0]) if x[1] != i[1]]
-        schedule = [tuple(x) for x in order if x[0] == i[1]]
-        scan_neighbours_schedule.append((scan, neighbours, schedule))
+        start, end = tuple(i)
+        if len(visited) == 0:
+            previous = order[0][0]
+        else:
+            previous = [x for x in visited if x[1] == start][0]
+        neighbours = [x for x in G.edges(start) if x[1] != end]
+        schedule = [tuple(x) for x in order if x[0] == end]
+        scan_neighbours_schedule.append(((previous, start, end), neighbours, schedule))
 
     return scan_neighbours_schedule
+
