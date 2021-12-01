@@ -2,8 +2,24 @@ import networkx as nx
 from anytree import Node, RenderTree
 import numpy as np
 
-#  Load data
-two_d_rmsd = "test.2drms.dat"
+
+def schedule_from_2drmsd(filename):
+    # load data
+    two_d_rmsd_data = load_adjacency_matrix(filename)
+    # Sparsify matrix based on RMSD cut off
+    two_d_rmsd_data_sparse = sparsify_matrix(two_d_rmsd_data)
+    # Graph and visting list
+    G, visited = find_paths_from_adjacency(two_d_rmsd_data_sparse)
+    # Using anytree package for Tree data struct.
+    anytree = list_to_anytree(visited)
+    # Using the tree and the entire graph, return the schedule of scan jobs
+    scan_neighbours_schedule = scan_neighbours_schedule_from_anytree_graph(anytree, G)
+    return scan_neighbours_schedule
+
+
+def print_anytree(anytree):
+    for pre, fill, node in RenderTree(anytree):
+        print(f"{pre}{node.name}")
 
 
 def list_to_anytree(lst):
@@ -76,7 +92,7 @@ def find_paths_from_adjacency(two_d_rmsd_data_sparse):
     return G, visited
 
 
-def scan_order_from_anytree(anytree):
+def scan_neighbours_schedule_from_anytree_graph(anytree, G):
     """
     Scan recursively through the tree, starting from the root
     """
@@ -94,5 +110,12 @@ def scan_order_from_anytree(anytree):
 
     scan_children(anytree)
 
-    return order
+    scan_neighbours_schedule = []
 
+    for i in order:
+        scan = tuple(i)
+        neighbours = [x for x in G.edges(i[0]) if x[1] != i[1]]
+        schedule = [tuple(x) for x in order if x[0] == i[1]]
+        scan_neighbours_schedule.append((scan, neighbours, schedule))
+
+    return scan_neighbours_schedule
