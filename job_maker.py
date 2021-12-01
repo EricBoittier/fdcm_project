@@ -101,6 +101,9 @@ def template_neighbours_from_2drmsd(args, do_neighbours=True):
     #  Make directory if needed
     if not os.path.exists(args.job_folder):
         os.makedirs(args.job_folder)
+
+    #  list to keep track of jobs so a file isn't overwritten.
+    jobs_submitted = []
     #  Process the schedule for job writing
     for i, (scan, neighbours, schedule) in enumerate(scan_neighbours_schedule):
         print(i, scan, neighbours, schedule)
@@ -109,19 +112,22 @@ def template_neighbours_from_2drmsd(args, do_neighbours=True):
         is_first = (0 == previous)
         tmp_str = template_fit(args, start, end, first=is_first, prev_frame=previous)
         with open(os.path.join(args.job_folder, f"frame_{start}_{end}.sh"), "w") as f:
+            jobs_submitted.append(os.path.join(args.job_folder, f"frame_{start}_{end}.sh"))
             print(os.path.join(args.job_folder, f"frame_{start}_{end}.sh"))
             f.write(tmp_str)
 
             #  write the neighbour jobs and schedule them
             if do_neighbours:
                 for n in neighbours:
-                    tmp_str = template_fit(args, start, n[1], first=is_first, prev_frame=previous)
                     _fpath = os.path.join(args.job_folder, f"frame_{start}_{n[1]}.sh")
-                    f_ = open(_fpath, "w")
-                    f_.write(tmp_str)
-                    f_.close()
-                    print(f"\nsbatch {_fpath} \n")
-                    f.write(f"\nsbatch {_fpath} \n")
+                    if _fpath not in jobs_submitted:
+                        tmp_str = template_fit(args, start, n[1], first=is_first, prev_frame=previous)
+
+                        f_ = open(_fpath, "w")
+                        f_.write(tmp_str)
+
+                        print(f"\nsbatch {_fpath} \n")
+                        f.write(f"\nsbatch {_fpath} \n")
 
             #  schedule the jobs preceding this one (i.e. all branches from this node)
             for job in schedule:
