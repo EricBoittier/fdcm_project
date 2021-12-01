@@ -111,7 +111,7 @@ def template_neighbours_from_2drmsd(args, do_neighbours=True):
         #  write the neighbour jobs and schedule them
         if do_neighbours:
             for n in neighbours:
-                tmp_str = template_fit(args, start, n, first=is_first, prev_frame=previous)
+                tmp_str = template_fit(args, start, n[1], first=is_first, prev_frame=previous)
                 _fpath = os.path.join(args.job_folder, f"frame_{start}_{n[1]}.sh")
                 f_ = open(_fpath, "w")
                 f_.write(tmp_str)
