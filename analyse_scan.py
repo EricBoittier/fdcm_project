@@ -59,7 +59,7 @@ def get_local_charges(path):
     return tmp_dict
 
 
-def get_path_neighbours(args):
+def get_path_neighbours_from_gaussian_scan(args):
     gaussian_scan_output = args.gaussian_scan_output
     # print(gaussian_scan_output)
     p = cclib.io.ccopen(gaussian_scan_output)

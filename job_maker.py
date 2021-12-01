@@ -3,7 +3,7 @@ import os
 import jinja2
 from jinja2 import StrictUndefined
 
-from analyse_scan import get_path_neighbours
+from analyse_scan import get_path_neighbours_from_gaussian_scan
 
 """
 Templates
@@ -68,7 +68,7 @@ def template_fit(args, start_frame, next_frame, prev_frame=None, first=False):
 
 
 def template_neighbours(args, do_neighbours=True):
-    paths, neighbours = get_path_neighbours(args)
+    paths, neighbours = get_path_neighbours_from_gaussian_scan(args)
 
     if not os.path.exists(args.job_folder):
         os.makedirs(args.job_folder)
