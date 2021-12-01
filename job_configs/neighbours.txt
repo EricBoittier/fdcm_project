@@ -20,3 +20,4 @@ initial_fit=/home/unibas/boittier/fdcm_project/mdcms/amide/model1/24_charges_ref
 initial_fit_cube=/home/unibas/boittier/fdcm_project/mdcms/amide/model1/amide1.pdb.chk
 cubes_dir=/data/unibas/boittier/fdcm/amide/scan-large
 n_scan_points=0
+rmsd=/home/unibas/boittier/fdcm_project/2drmsd_data/test.2drms.dat
