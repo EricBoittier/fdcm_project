@@ -103,7 +103,7 @@ def template_neighbours_from_2drmsd(args, do_neighbours=True):
         os.makedirs(args.job_folder)
     #  Process the schedule for job writing
     for i, (scan, neighbours, schedule) in enumerate(scan_neighbours_schedule):
-        print(i)
+        print(i, scan)
         is_first = (i == 0)
         previous, start, end = scan
         tmp_str = template_fit(args, start, end, first=is_first, prev_frame=previous)
@@ -125,4 +125,5 @@ def template_neighbours_from_2drmsd(args, do_neighbours=True):
             next_job = os.path.join(args.job_folder, f"frame_{job[0]}_{job[1]}.sh")
             f.write(f"\nsbatch {next_job} \n")
             print(next_job)
+
         f.close()
