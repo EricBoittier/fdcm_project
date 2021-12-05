@@ -12,7 +12,7 @@
       <paths name="pc-nccr-cluster">
         <serverdata>
           <mappings>
-            <mapping deploy="fdcm_project" local="$PROJECT_DIR$" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
