@@ -1,0 +1,22 @@
+[Defaults]
+output_dir=/data/unibas/boittier/test-neighbours2
+cubefit_path=/home/unibas/boittier/fdcm_project/mdcm_bin/cubefit.x
+fdcm_path=/home/unibas/boittier/fdcm_project/fdcm.x
+ars_path=/home/unibas/boittier/fdcm_project/ARS.py
+
+gaussian_scan_output =/home/unibas/boittier/RDKit_G2/amide1.pdb/SCAN_1_2_3_4_S_36_10.0/test/SCAN_amide1.pdb.out
+job_folder=/home/unibas/boittier/fdcm_project/job_files/test-neighbours2
+
+data_path =/data/unibas/boittier/test-neighbours2
+csv_out_name =test-neighbours.csv
+job_type=analyse
+n_steps=2
+n_charges=24
+scan_name=SCAN_amide1.pdb-
+suffix=.xyz.chk
+frames=/home/unibas/boittier/fdcm_project/mdcms/amide/model1/frames.txt
+acd=/home/unibas/boittier/fdcm_project/0_fit.xyz.acd
+initial_fit=/home/unibas/boittier/fdcm_project/mdcms/amide/model1/24_charges_refined.xyz
+initial_fit_cube=/home/unibas/boittier/fdcm_project/mdcms/amide/model1/amide1.pdb.chk
+cubes_dir=/data/unibas/boittier/fdcm/amide/scan-large
+n_scan_points=0
