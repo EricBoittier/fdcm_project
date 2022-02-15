@@ -46,6 +46,7 @@ def main(argv=None):
 
     if args.job_type == "scan":
         output = template_concerted(args)
+        print(output)
     elif args.job_type == "concerted":
         output = template_scan(args)
     elif args.job_type == "morton":

@@ -201,6 +201,7 @@ class ARS():
         #  Match charges to closest atoms
         if atom_charge_match is None:
             self.charge_atom_associations, self.atom_charge_dict = self.match_charges()
+            self.save_charge_atom_associations()
         else:
             self.read_charge_atom_associations(atom_charge_match)
 

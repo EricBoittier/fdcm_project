@@ -3,7 +3,7 @@ import os
 import jinja2
 from jinja2 import StrictUndefined
 
-from analyse_scan import get_path_neighbours_from_gaussian_scan
+#from analyse_scan import get_path_neighbours_from_gaussian_scan
 from create_neighbours import schedule_from_2drmsd
 
 """

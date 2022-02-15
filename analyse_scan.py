@@ -37,7 +37,6 @@ def key_to_frame(df, i):
     _ = df[df["a1_"] == i[0]]
     _ = _[_["a2_"] == i[1]]
     _ = _[_["d1_"] == i[2]]
-    # print(_)
     return int(list(_["frame"])[0])
 
 
@@ -59,14 +58,14 @@ def get_local_charges(path):
     return tmp_dict
 
 
-def get_path_neighbours_from_gaussian_scan(args):
+def get_path_neighbours(args):
     gaussian_scan_output = args.gaussian_scan_output
-    # print(gaussian_scan_output)
+    print(gaussian_scan_output)
     p = cclib.io.ccopen(gaussian_scan_output)
     p = p.parse()
     scan_names = p.scannames
     scan_parms = np.array(p.scanparm)
-    # print(scan_parms)
+    print(scan_parms)
 
     a1 = [x // 1 for x in scan_parms[0]]
     a2 = [x // 1 for x in scan_parms[1]]
@@ -89,32 +88,52 @@ def get_path_neighbours_from_gaussian_scan(args):
 
     df = pd.DataFrame({"frame": frames, "a1": a1_, "a2": a2_, "d1": d1_})
     df = add_key_int(df)
-    ranges = [[0, len(set(a1_)) - 1], [0, len(set(a2_)) - 1], [0, len(set(d1_)) - 1]]
-    # print(ranges)
+    ranges = [[0, len(set(a1_))], [0, len(set(a2))], [0, len(set(d1))]]
+
     path = []
     neighbours = []
-    visited = []
+
     for key, j in enumerate(range(len(frames))):
         r = df[df["frame"] == key]
         i = np.array([int(r["a1_"]), int(r["a2_"]), int(r["d1_"])])
 
         ns = get_neighbours(i, ranges)
         frame = key_to_frame(df, i)
-
-        #  don't go back and scan the previous frame
-        visited.append(frame)
-        #  don't go forward and scan the next frame
-        visited.append(frame + 1)
+        print("visiting: frame_", frame)
+        print(ns)
+        # visited.append(frame)
 
         n = [key_to_frame(df, ii) for ii in ns]
-        n = [ns for ns in n if ns not in visited]
         neighbours.append(n)
         path.append(key)
 
-    return path, neighbours
-
 
 def analyse(args):
+
+    args_dict = dict(args)
+    arg_keys = args_dict.keys()
+    if "gaussian_scan_output" in arg_keys:
+        pass
+    elif "rmsd" in arg_keys:
+        pass
+
+    data_path = args.data_path
+    files = [x for x in os.listdir(data_path) if x.__contains__("frame")]
+
+    frames = []
+    local_charges = []
+    gd = []
+
+    for i, frame in enumerate(files):
+        frame_dir = os.path.join(data_path, frame)
+        local_files = [x for x in os.listdir(frame_dir) if x.__contains__("local")]
+        keys = [x.split(".") for x in local_files]
+        for key in keys:
+            pass
+
+
+
+def analyse_gaussian(args):
     gaussian_scan_output = args.gaussian_scan_output
     data_path = args.data_path
     csv_out_name = args.csv_out_name
@@ -124,7 +143,6 @@ def analyse(args):
     scan_names = p.scannames
     scan_parms = np.array(p.scanparm)
     print(scan_parms)
-    scan_energies = p.scanenergies
 
     a1 = [x // 1 for x in scan_parms[0]]
     a2 = [x // 1 for x in scan_parms[1]]
@@ -134,19 +152,9 @@ def analyse(args):
     a2 = {i: x for i, x in enumerate(a2)}
     d1 = {i: x for i, x in enumerate(d1)}
 
-    # files = [os.path.join(data_path, x, "GD.log") for x in os.listdir(data_path) if x.__contains__("frame")]
-
-    frame_directories = [os.path.join(data_path, x) for x in os.listdir(data_path) if
-                         x.__contains__("frame")]
-
-    local_files = []
-    for frame in frame_directories:
-        lf = [os.path.join(frame, x) for x in os.listdir(frame) if
-              x.__contains__("local")]
-        local_files.extend(lf)
-
-    # local_files = [os.path.join(data_path, x, "refined.xyz.local") for x in os.listdir(data_path) if
-    #                x.__contains__("frame")]
+    files = [os.path.join(data_path, x, "GD.log") for x in os.listdir(data_path) if x.__contains__("frame")]
+    local_files = [os.path.join(data_path, x, "refined.xyz.local") for x in os.listdir(data_path) if
+                   x.__contains__("frame")]
 
     frames = []
     errors = []
@@ -154,37 +162,24 @@ def analyse(args):
     a2_ = []
     d1_ = []
     local_charges = []
-    local_file_names = []
-    energies = []
 
-    for frame_dir in frame_directories:
-
-        local_files = [os.path.join(frame_dir, x) for x in os.listdir(frame_dir) if
-                       x.__contains__("local") and x.__contains__("frame")]
-
-        for local in local_files:
-            key = local.split(".")[0]
-            GD_file = os.path.join(frame_dir, f"{key}.xyz.GD.log")
-            local_file_names.append(local.split("/")[-1])
-            local_charges.append(get_local_charges(local))
-            result = open(GD_file).readlines()[-1].split()[1]
-            frame = int(GD_file.split("/")[-2].split("_")[1])
-            error = float(result)
-            frames.append(frame)
-            errors.append(error)
-            a1_.append(a1[frame])
-            a2_.append(a2[frame])
-            d1_.append(d1[frame])
-            energies.append(scan_energies[frame])
+    for f, local in zip(files, local_files):
+        local_charges.append(get_local_charges(local))
+        result = open(f).readlines()[-1].split()[1]
+        frame = int(f.split("/")[-2].split("_")[1])
+        error = float(result)
+        frames.append(frame)
+        errors.append(error)
+        a1_.append(a1[frame])
+        a2_.append(a2[frame])
+        d1_.append(d1[frame])
 
     lc_df = pd.DataFrame(local_charges)
     print(lc_df)
-    # adding energies
-    energies = [x - min(energies) for x in energies]
     print(frames, len(a1_), len(a2_), len(d1_), len(frames))
-    df = pd.DataFrame({"frame": frames, "energy": energies, "local_file": local_file_names,
-                       "error": errors, "a1": a1_, "a2": a2_, "d1": d1_})
+    df = pd.DataFrame({"frame": frames, "error": errors, "a1": a1_, "a2": a2_, "d1": d1_})
     df = df.join(lc_df)
     print(df)
-    df = add_key_int(df)
     df.to_csv(csv_out_name)
+
+    df = add_key_int(df)
