@@ -44,6 +44,7 @@ def main(argv=None):
     parser.add_argument("--option")
     args = parser.parse_args(remaining_argv)
 
+    #  Banch based on job type
     if args.job_type == "scan":
         output = template_concerted(args)
         print(output)
@@ -51,6 +52,7 @@ def main(argv=None):
         output = template_scan(args)
     elif args.job_type == "morton":
         output = template_morton(args)
+        print(output)
     elif args.job_type == "neighbours":
         output = template_neighbours_from_gaussian_scan(args)
     elif args.job_type == "graph":

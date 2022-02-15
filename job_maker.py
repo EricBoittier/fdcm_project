@@ -49,7 +49,7 @@ def template_morton(args):
                                n_steps=args.n_steps, scan_name=args.scan_name, cubes_dir=args.cubes_dir,
                                output_dir=args.output_dir, frames=args.frames, initial_fit=args.initial_fit,
                                initial_fit_cube=args.initial_fit_cube, n_scan_points=args.n_scan_points,
-                               morton=args.morton, morton_start=args.morton_start)
+                               morton=args.morton, morton_start=args.morton_start, acd=args.acd)
     return output
 
 
