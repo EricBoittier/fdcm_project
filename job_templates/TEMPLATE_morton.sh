@@ -23,9 +23,10 @@ initial_fit={{initial_fit}}
 initial_fit_cube={{initial_fit_cube}}
 morton_start={{morton_start}}
 acd={{acd}}
+
 #  for initial fit
-esp=$cubes_dir/$scan_name'0'$suffix'.p.cube'
-dens=$cubes_dir/$scan_name'0'$suffix'.d.cube'
+esp=$cubes_dir/$scan_name$morton_start$suffix'.p.cube'
+dens=$cubes_dir/$scan_name$morton_start$suffix'.d.cube'
 
 #  Go to the output directory
 mkdir -p $output_dir
@@ -48,7 +49,7 @@ $cubefit -v -generate -esp $esp -dens $dens  -xyz refined.xyz > cubemaking.log
 $cubefit -v -analysis -esp $esp -esp2 $n_charges'charges.cube' -dens  $dens > analysis.log
 
 initial_fit='../frame_'$morton_start/"refined.xyz"
-initial_fit_cube=$cubes_dir/$scan_name'0'$suffix
+initial_fit_cube=$cubes_dir/$scan_name$morton_start$suffix
 
 cd ..
 #

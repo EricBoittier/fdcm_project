@@ -85,9 +85,10 @@ def get_local_axis(atom_pos, frame_atoms, method="bond"):
         b1_z = (a[2] - b[2]) / distance_ab
 
         distance_bc = distance.euclidean(b, c)
-        b2_x = (b[0] - c[0]) / distance_bc
-        b2_y = (b[1] - c[1]) / distance_bc
-        b2_z = (b[2] - c[2]) / distance_bc
+
+        b2_x = (c[0] - b[0]) / distance_bc
+        b2_y = (c[1] - b[1]) / distance_bc
+        b2_z = (c[2] - b[2]) / distance_bc
 
         #  Z axes
         ez1 = np.array([b1_x, b1_y, b1_z])
@@ -95,7 +96,6 @@ def get_local_axis(atom_pos, frame_atoms, method="bond"):
 
         if method == "bond":
             ez2 = np.array([b1_x, b1_y, b1_z])
-
         elif method == "bisector":
             """ Calculate Z(2) as bisector
             """
@@ -125,25 +125,25 @@ def get_local_axis(atom_pos, frame_atoms, method="bond"):
         ey1[2] = ey1[2] / re_x
 
         #         ey1 = np.cross(ez1, ez3)
-
-        ey2 = ey1
-        ey3 = ey1
+        ey2 = ey1.copy()
+        ey3 = ey1.copy()
 
         #  X axes
-        ex1 = np.zeros(3)
-        ex3 = np.zeros(3)
         #  ex1 and ex2
         ex1 = np.cross(ey1, ez1)
         if method == "bond":
-            ex2 = ex1
+            ex2 = ex1.copy()
         else:
             ex2 = np.cross(ey2, ez2)
         #  ex3
-        ex3 = np.cross(ey3, ez3)
-
-        frame_vectors.append((-1 * np.array([ex1, ey1, ez1]), # left handed axes system
-                              np.array([ex2, ey2, ez2]),
-                              np.array([ex3, ey3, ez3])))
+        ex3 = np.cross(ey3, ez3) # Is the problem here?
+        # ex3 = np.cross(ez3, ey3)
+        # frame_vectors.append(([ex1, ey1, ez1],
+        #                       [ex2, ey2, ez2],
+        #                       [ex3, ey3, ez3]))
+        frame_vectors.append(([ex1, ey1, ez1], #
+                              [ex2, ey2, ez2],
+                              [ex3, ey3, ez3]))
     return frame_vectors
 
 
@@ -442,7 +442,11 @@ class ARS():
                 atom_index -= 1
                 if atom_index in list(self.atom_charge_dict.keys()) and atom_index not in used_atoms:
                     charges = self.atom_charge_dict[atom_index]
+
+                    # something is worng with the matching between CHARMM and here, this makes some arrays consistent
                     ex, ey, ez = self.frame_vectors_plus[f][ai]
+                    ex = np.array(ex) *-1
+
                     # Find the associated charges for that atom, and loop
                     for charge in charges:
                         c_pos_local = self.c_positions_local[charge]
@@ -451,14 +455,26 @@ class ARS():
                         c_l_x = c_pos_local[0]
                         c_l_y = c_pos_local[1]
                         c_l_z = c_pos_local[2]
+                        print(atom_index, charge)
+                        print(c_l_x, c_l_y, c_l_z)
+                        print(ex)
+                        print(ey)
+                        print(ez)
 
-                        x_vec = np.multiply(ex, c_l_x)
-                        y_vec = np.multiply(ey, c_l_y)
-                        z_vec = np.multiply(ez, c_l_z)
-                        #
-                        sum_of_components = x_vec + y_vec + z_vec
+                        # x_vec = np.multiply(ex, c_l_x)
+                        # y_vec = np.multiply(ey, c_l_y)
+                        # z_vec = np.multiply(ez, c_l_z)
+
+                        x_vec = c_l_x * ex[0] + c_l_y * ex[1] + c_l_z * ex[2]
+                        y_vec = c_l_x * ey[0] + c_l_y * ey[1] + c_l_z * ey[2]
+                        z_vec = c_l_x * ez[0] + c_l_y * ez[1] + c_l_z * ez[2]
+
+                        # sum_of_components = x_vec + y_vec + z_vec
+                        # print([x_vec, y_vec, z_vec])
+                        # print(atom_pos_xyz)
+                        # print([x_vec, y_vec, z_vec] + atom_pos_xyz)
                         #  translate back to the center of atoms (for the new conformation)
-                        c_positions_global[charge] = sum_of_components + atom_pos_xyz
+                        c_positions_global[charge] = [x_vec, y_vec, z_vec] + atom_pos_xyz
 
                 used_atoms.append(atom_index)
         return c_positions_global
