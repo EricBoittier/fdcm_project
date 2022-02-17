@@ -112,14 +112,6 @@ def analyse(args):
     data_path = args.output_dir
     csv_out_name = args.csv_out_name
 
-    a1 = [x // 1 for x in scan_parms[0]]
-    a2 = [x // 1 for x in scan_parms[1]]
-    d1 = [x // 1 for x in scan_parms[2]]
-
-    a1 = {i: x for i, x in enumerate(a1)}
-    a2 = {i: x for i, x in enumerate(a2)}
-    d1 = {i: x for i, x in enumerate(d1)}
-
     files = [os.path.join(data_path, x, "GD.log") for x in os.listdir(data_path) if x.__contains__("frame")]
     local_file_dirs = [os.path.join(data_path, x) for x in os.listdir(data_path) if
                    x.__contains__("frame")]
