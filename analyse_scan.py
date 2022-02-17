@@ -112,7 +112,7 @@ def analyse(args):
     data_path = args.output_dir
     csv_out_name = args.csv_out_name
 
-    files = [os.path.join(data_path, x, "GD.log") for x in os.listdir(data_path) if x.__contains__("frame")]
+    files = [os.path.join(data_path, x, "analysis.log") for x in os.listdir(data_path) if x.__contains__("frame")]
     local_file_dirs = [os.path.join(data_path, x) for x in os.listdir(data_path) if
                    x.__contains__("frame")]
     local_files = []
@@ -126,7 +126,7 @@ def analyse(args):
 
     for f, local in zip(files, local_files):
         local_charges.append(get_local_charges(local))
-        result = open(f).readlines()[-1].split()[1]
+        result = open(f).readlines()[-5].split()[1]
         frame = int(f.split("/")[-2].split("_")[1])
         error = float(result)
         frames.append(frame)
@@ -139,7 +139,6 @@ def analyse(args):
     print(df)
     df.to_csv(csv_out_name)
     # df = add_key_int(df)
-
 
 
 def analyse_gaussian(args):
@@ -189,6 +188,5 @@ def analyse_gaussian(args):
     df = pd.DataFrame({"frame": frames, "error": errors, "a1": a1_, "a2": a2_, "d1": d1_})
     df = df.join(lc_df)
     print(df)
-    df.to_csv(csv_out_name)
-
     df = add_key_int(df)
+    df.to_csv(csv_out_name)
