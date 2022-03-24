@@ -84,10 +84,10 @@ def get_local_axis(atom_pos, frame_atoms, method="bond"):
         b1_y = (a[1] - b[1]) / distance_ab
         b1_z = (a[2] - b[2]) / distance_ab
 
-        distance_bc = distance.euclidean(b, c)
-        b2_x = (b[0] - c[0]) / distance_bc
-        b2_y = (b[1] - c[1]) / distance_bc
-        b2_z = (b[2] - c[2]) / distance_bc
+        distance_bc = distance.euclidean(c, b)
+        b2_x = (c[0] - b[0]) / distance_bc
+        b2_y = (c[1] - b[1]) / distance_bc
+        b2_z = (c[2] - b[2]) / distance_bc
 
         #  Z axes
         ez1 = np.array([b1_x, b1_y, b1_z])
@@ -120,30 +120,30 @@ def get_local_axis(atom_pos, frame_atoms, method="bond"):
         ey1[1] = b1_z * b2_x - b1_x * b2_z
         ey1[2] = b1_x * b2_y - b1_y * b2_x
         re_x = np.sqrt(ey1[0] ** 2 + ey1[1] ** 2 + ey1[2] ** 2)
-        ey1[0] = ey1[0] / re_x
-        ey1[1] = ey1[1] / re_x
-        ey1[2] = ey1[2] / re_x
 
-        #         ey1 = np.cross(ez1, ez3)
+        # left handed axes system
+        ey1[0] = -1 * ey1[0] / re_x
+        ey1[1] = -1 * ey1[1] / re_x
+        ey1[2] = -1 * ey1[2] / re_x
 
-        ey2 = ey1
-        ey3 = ey1
+        ey2 = ey1.copy()
+        ey3 = ey1.copy()
 
         #  X axes
-        ex1 = np.zeros(3)
-        ex3 = np.zeros(3)
         #  ex1 and ex2
         ex1 = np.cross(ey1, ez1)
         if method == "bond":
-            ex2 = ex1
+            ex2 = ex1.copy()
         else:
             ex2 = np.cross(ey2, ez2)
         #  ex3
         ex3 = np.cross(ey3, ez3)
+        frame_vectors.append((np.array([ex1, -1 * ey1, ez1]),
+                              np.array([ex2, -1 * ey2, ez2]),
+                              np.array([ex3, -1 * ey3, ez3])))
 
-        frame_vectors.append((-1 * np.array([ex1, ey1, ez1]), # left handed axes system
-                              np.array([ex2, ey2, ez2]),
-                              np.array([ex3, ey3, ez3])))
+        # print(frame_vectors[-1])
+
     return frame_vectors
 
 
@@ -153,7 +153,6 @@ def save_charges(charge_positions, charges, filename="out_charges.xyz"):
     file.write("{}\n".format(len(charge_positions)))
     file.write("s                      x[A]                      y[A]                      z[A]                   "
                "   q[e]\n")
-
     c = 1
     for xyz, q in zip(charge_positions, charges):
         c += 1
@@ -205,8 +204,8 @@ class ARS():
         else:
             self.read_charge_atom_associations(atom_charge_match)
 
-        print(self.charge_atom_associations)
-        print(self.match_charges()[0])
+        # print(self.charge_atom_associations)
+        # print(self.match_charges()[0])
 
         # Calculate local axes and transform charges
         # Calculate the new axes for each frame
@@ -451,6 +450,12 @@ class ARS():
                         c_l_x = c_pos_local[0]
                         c_l_y = c_pos_local[1]
                         c_l_z = c_pos_local[2]
+
+                        print(atom_index, charge)
+                        print(c_l_x, c_l_y, c_l_z)
+                        print(ex)
+                        print(ey)
+                        print(ez)
 
                         x_vec = np.multiply(ex, c_l_x)
                         y_vec = np.multiply(ey, c_l_y)

@@ -109,28 +109,36 @@ def get_path_neighbours(args):
 
 
 def analyse(args):
+    data_path = args.output_dir
+    csv_out_name = args.csv_out_name
 
-    args_dict = dict(args)
-    arg_keys = args_dict.keys()
-    if "gaussian_scan_output" in arg_keys:
-        pass
-    elif "rmsd" in arg_keys:
-        pass
-
-    data_path = args.data_path
-    files = [x for x in os.listdir(data_path) if x.__contains__("frame")]
+    files = [os.path.join(data_path, x, "analysis.log") for x in os.listdir(data_path) if x.__contains__("frame")]
+    local_file_dirs = [os.path.join(data_path, x) for x in os.listdir(data_path) if
+                   x.__contains__("frame")]
+    local_files = []
+    for lfdir in local_file_dirs:
+        local_file = [x for x in os.listdir(lfdir) if x.endswith(".local")][0]
+        local_files.append(os.path.join(lfdir, local_file))
 
     frames = []
+    errors = []
     local_charges = []
-    gd = []
 
-    for i, frame in enumerate(files):
-        frame_dir = os.path.join(data_path, frame)
-        local_files = [x for x in os.listdir(frame_dir) if x.__contains__("local")]
-        keys = [x.split(".") for x in local_files]
-        for key in keys:
-            pass
+    for f, local in zip(files, local_files):
+        local_charges.append(get_local_charges(local))
+        result = open(f).readlines()[-5].split()[1]
+        frame = int(f.split("/")[-2].split("_")[1])
+        error = float(result)
+        frames.append(frame)
+        errors.append(error)
 
+    lc_df = pd.DataFrame(local_charges)
+
+    df = pd.DataFrame({"frame": frames, "error": errors})
+    df = df.join(lc_df)
+    print(df)
+    df.to_csv(csv_out_name)
+    # df = add_key_int(df)
 
 
 def analyse_gaussian(args):
@@ -180,6 +188,5 @@ def analyse_gaussian(args):
     df = pd.DataFrame({"frame": frames, "error": errors, "a1": a1_, "a2": a2_, "d1": d1_})
     df = df.join(lc_df)
     print(df)
-    df.to_csv(csv_out_name)
-
     df = add_key_int(df)
+    df.to_csv(csv_out_name)
