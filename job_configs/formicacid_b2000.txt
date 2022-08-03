@@ -1,0 +1,18 @@
+[Defaults]
+output_dir=/data/unibas/boittier/formicacid2000
+cubefit_path=/home/unibas/boittier/fdcm_project/mdcm_bin/cubefit.x
+fdcm_path=/home/unibas/boittier/fdcm_project/fdcm.x
+ars_path=/home/unibas/boittier/fdcm_project/ARS.py
+n_steps=2000
+n_charges=12
+scan_name=scan
+suffix=
+frames=/home/unibas/boittier/fdcm_project/mdcms/formicacid/frames.txt
+initial_fit=/home/unibas/boittier/fdcm_project/mdcms/formicacid/12charges.xyz
+initial_fit_cube=/data/unibas/boittier/models/formicacid/scan/scan0
+cubes_dir=/data/unibas/boittier/models/formicacid/scan
+n_scan_points=6
+job_type=morton
+morton=22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40
+morton_start=21
+acd=/data/unibas/boittier/formicacid0/frame_21/out.acd.acd

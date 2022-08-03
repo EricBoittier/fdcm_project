@@ -1,9 +1,9 @@
 [Defaults]
-output_dir=/data/unibas/boittier/water_remake
+output_dir=/data/unibas/boittier/water_remake2000
 cubefit_path=/home/unibas/boittier/fdcm_project/mdcm_bin/cubefit.x
 fdcm_path=/home/unibas/boittier/fdcm_project/fdcm.x
 ars_path=/home/unibas/boittier/fdcm_project/ARS.py
-n_steps=10
+n_steps=0
 n_charges=6
 scan_name=scan
 suffix=

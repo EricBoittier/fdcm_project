@@ -1,28 +1,28 @@
 #!/bin/bash
-#SBATCH --job-name={{output_dir}}
+#SBATCH --job-name=/data/unibas/boittier/water_remake2000
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --partition=short
-#SBATCH --output=/home/unibas/boittier/FDCM/out_files/{{scan_name}}_%A.out
+#SBATCH --output=/home/unibas/boittier/FDCM/out_files/scan_%A.out
 
 hostname
 #  Path to scripts and executables
-cubefit={{cubefit_path}}
-fdcm={{fdcm_path}}
-ars={{ars_path}}
+cubefit=/home/unibas/boittier/fdcm_project/mdcm_bin/cubefit.x
+fdcm=/home/unibas/boittier/fdcm_project/fdcm.x
+ars=/home/unibas/boittier/fdcm_project/ARS.py
 
 #  Variables for the job
-n_steps={{n_steps}}
-n_charges={{n_charges}}
-scan_name={{scan_name}}
-suffix={{suffix}}
-cubes_dir={{cubes_dir}}
-output_dir={{output_dir}}
-frames={{frames}}
-initial_fit={{initial_fit}}
-initial_fit_cube={{initial_fit_cube}}
-morton_start={{morton_start}}
-acd={{acd}}
+n_steps=0
+n_charges=6
+scan_name=scan
+suffix=
+cubes_dir=/data/unibas/boittier/models/water/scan2
+output_dir=/data/unibas/boittier/2water_remake0
+frames=/home/unibas/boittier/water_model/frames.txt
+initial_fit=/home/unibas/boittier/water_model/6-combined_new.xyz
+initial_fit_cube=/data/unibas/boittier/models/water/scan/scan0
+morton_start=0
+acd=/home/unibas/boittier/water_model/water.acd
 
 #  for initial fit
 esp=$cubes_dir/$scan_name$morton_start$suffix'.p.cube'
@@ -38,7 +38,7 @@ cd 'frame_'$morton_start || return
 # Do Initial Fit
 #
 # adjust reference frame
-python $ars -charges $initial_fit -pcube $initial_fit_cube.d.cube  -pcube2 $esp -frames $frames -output refined.xyz > ARS.log
+python $ars -charges $initial_fit -pcube $initial_fit_cube.d.cube  -pcube2 $esp -frames $frames -output refined.xyz -acd $acd> ARS.log
 # do gradient descent fit
 $fdcm -xyz refined.xyz.global -dens $dens -esp  $esp -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 > GD.log
 # re adjust to local
@@ -57,7 +57,7 @@ cd ..
 #
 start=$morton_start
 
-for next in {{ morton }}
+for next in 1 2 3 4 5 6 7 8 9 10 
 do
 
 dir='frame_'$next

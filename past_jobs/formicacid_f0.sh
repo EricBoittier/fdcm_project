@@ -1,28 +1,28 @@
 #!/bin/bash
-#SBATCH --job-name={{output_dir}}
+#SBATCH --job-name=/data/unibas/boittier/formicacid2000
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --partition=short
-#SBATCH --output=/home/unibas/boittier/FDCM/out_files/{{scan_name}}_%A.out
+#SBATCH --output=/home/unibas/boittier/FDCM/out_files/scan_%A.out
 
 hostname
 #  Path to scripts and executables
-cubefit={{cubefit_path}}
-fdcm={{fdcm_path}}
-ars={{ars_path}}
+cubefit=/home/unibas/boittier/fdcm_project/mdcm_bin/cubefit.x
+fdcm=/home/unibas/boittier/fdcm_project/fdcm.x
+ars=/home/unibas/boittier/fdcm_project/ARS.py
 
 #  Variables for the job
-n_steps={{n_steps}}
-n_charges={{n_charges}}
-scan_name={{scan_name}}
-suffix={{suffix}}
-cubes_dir={{cubes_dir}}
-output_dir={{output_dir}}
-frames={{frames}}
-initial_fit={{initial_fit}}
-initial_fit_cube={{initial_fit_cube}}
-morton_start={{morton_start}}
-acd={{acd}}
+n_steps=0
+n_charges=12
+scan_name=scan
+suffix=
+cubes_dir=/data/unibas/boittier/models/formicacid/scan
+output_dir=/data/unibas/boittier/formicacid0
+frames=/home/unibas/boittier/fdcm_project/mdcms/formicacid/frames.txt
+initial_fit=/home/unibas/boittier/fdcm_project/mdcms/formicacid/12charges.xyz
+initial_fit_cube=/data/unibas/boittier/models/formicacid/scan/scan0
+morton_start=0
+acd=/data/unibas/boittier/formicacid0/frame_0/out.acd.acd
 
 #  for initial fit
 esp=$cubes_dir/$scan_name$morton_start$suffix'.p.cube'
@@ -57,7 +57,7 @@ cd ..
 #
 start=$morton_start
 
-for next in {{ morton }}
+for next in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
 do
 
 dir='frame_'$next
