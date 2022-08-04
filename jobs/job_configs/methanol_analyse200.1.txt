@@ -1,0 +1,22 @@
+[Defaults]
+output_dir=/data/unibas/boittier/methanol200.1
+cubefit_path=/home/unibas/boittier/fdcm_project/mdcm_bin/cubefit.x
+fdcm_path=/home/unibas/boittier/fdcm_project/fdcm.x
+ars_path=/home/unibas/boittier/fdcm_project/ARS.py
+n_steps=2000
+n_charges=17
+scan_name=scan
+suffix=
+frames=/home/unibas/boittier/fdcm_project/mdcms/formamide/frames.txt
+initial_fit=/home/unibas/boittier/fdcm_project/mdcms/formamide/17charges.xyz
+initial_fit_cube=/data/unibas/boittier/models/formamide/scan/scan0
+cubes_dir=/data/unibas/boittier/models/formamide/scan
+n_scan_points=6
+
+morton=22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40
+morton_start=21
+acd=/data/unibas/boittier/formamide0/frame_21/out.acd.acd
+
+job_type=analyse
+csv_out_name=methanol200.1.csv
+
