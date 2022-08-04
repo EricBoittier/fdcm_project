@@ -46,29 +46,29 @@ def fit_charge(chg_n, df, key="parm", plot=False):
     if plot:
         """Make a plot showing the fitted function"""
         fig, ax = plt.subplots(3, 1, sharex=True)
-        ax[0].scatter(df[key], df[f"x_c{chg_n}"], s=10.5, c="red")
-        ax[1].scatter(df[key], df[f"y_c{chg_n}"], s=10.5, c="green")
-        ax[2].scatter(df[key], df[f"z_c{chg_n}"], s=10.5, c="blue")
-
-        ax[0].plot(df[key], fit_x["fitfunc"](df[key]), "--", c="k", linewidth=0.675)
-        ax[1].plot(df[key], fit_y["fitfunc"](df[key]), "--", c="k", linewidth=0.675)
-        ax[2].plot(df[key], fit_z["fitfunc"](df[key]), "--", c="k", linewidth=0.675)
-
-        ax[0].set_ylabel("$e_x$")
-        ax[1].set_ylabel("$e_y$")
-        ax[2].set_ylabel("$e_z$")
+        axes = ["x", "y", "z"]
+        colors = ["red", "green", "blue"]
+        labels = ["$e_x$", "$e_y$", "$e_z$"]
 
         for i in range(3):
+            ax[i].scatter(df[key], df[f"{axes[i]}_c{chg_n}"], s=10.5, c=colors[i])
+            ax[i].plot(df[key], fit_x["fitfunc"](df[key]), "--", c="k", linewidth=0.675)
+            ax[i].set_ylabel(labels[i])
+            med = df[key].median()
+            ax[i].set_xlim(med - 0.1, med + 0.1)
+
+            #  add text and covariance
             plt.text(0.5, 0.5, f"$q_{{{chg_n + 1}}}$",
                      rotation=0, verticalalignment="center",
                      transform=ax[i].transAxes)
-
             covariance = fits_[i]["maxcov"]
             plt.text(1, 1, "$\sigma_{X,Y}$ =" + "{:.3e}".format(covariance),
                      rotation=0, verticalalignment="center",
                      transform=ax[i].transAxes)
+
+        #  save the graph
         plt.savefig("{0}_c{1}.pdf".
-                    format(plot, chg_n + 1))
+                    format(plot, chg_n + 1), bbox_inches="tight")
 
     return fits_
 
