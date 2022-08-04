@@ -5,6 +5,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+timer.dat
+
 # C extensions
 *.so
 
