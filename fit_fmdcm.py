@@ -55,8 +55,8 @@ def fit_charge(chg_n, df, key="parm", plot=False):
             ax[i].scatter(df[key], Y_VALS, s=10.5, c=colors[i])
             ax[i].plot(df[key], fit_x["fitfunc"](df[key]), "--", c="k", linewidth=0.675)
             ax[i].set_ylabel(labels[i])
-            med = Y_VALS.median()
-            ax[i].set_ylim(med - 0.1, med + 0.1)
+            med = Y_VALS.mean()
+            ax[i].set_ylim(med - 0.05, med + 0.05)
 
             #  add text and covariance
             plt.text(0.5, 0.5, f"$q_{{{chg_n + 1}}}$",
