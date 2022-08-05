@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import scipy
 import matplotlib.pyplot as plt
+import fortranformat as ff
+
 
 def angle(a, b, c):
     ba = a - b
@@ -53,7 +55,7 @@ def fit_charge(chg_n, df, key="parm", plot=False):
         for i in range(3):
             Y_VALS = df[f"{axes[i]}_c{chg_n}"]
             ax[i].scatter(df[key], Y_VALS, s=10.5, c=colors[i])
-            ax[i].plot(df[key], fit_x["fitfunc"](df[key]), "--", c="k", linewidth=0.675)
+            ax[i].plot(df[key], fits_[i]["fitfunc"](df[key]), "--", c="k", linewidth=0.675)
             ax[i].set_ylabel(labels[i])
             med = Y_VALS.mean()
             ax[i].set_ylim(med - 0.05, med + 0.05)
@@ -84,6 +86,13 @@ def update_chg_models():
     errors without any approximation """
     pass
 
+def write_input():
+    """write an input file for fMDCM
 
+    fit: List of fit functions
+    frames: Dictionary of frames?
+
+    """
+    pass
 
 
