@@ -39,7 +39,7 @@ def load_csv(path, parm=False):
     return _
 
 
-def fit_charge(chg_n, df, key="parm", plot=False):
+def fit_charge(chg_n, df, key="parm", plot=False, xlabel="Degrees ($^{\circ}$)"):
     fit_x = fit_poly(df[key], df[f"x_c{chg_n}"])
     fit_y = fit_poly(df[key], df[f"y_c{chg_n}"])
     fit_z = fit_poly(df[key], df[f"z_c{chg_n}"])
@@ -68,6 +68,7 @@ def fit_charge(chg_n, df, key="parm", plot=False):
             plt.text(1, 1, "$\sigma_{X,Y}$ =" + "{:.3e}".format(covariance),
                      rotation=0, verticalalignment="center",
                      transform=ax[i].transAxes)
+            plt.xlabel(xlabel)
 
         #  save the graph
         plt.savefig("{0}_c{1}.pdf".

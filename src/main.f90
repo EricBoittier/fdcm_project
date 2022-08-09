@@ -149,7 +149,8 @@ integer :: ios
 
 integer :: i,j,k,l,a,b,g,try,qdim,lcheck,n_steps !current dimensionality of charge
 
-real(rp) :: deriv, tmp, tmp2, step_size, stepsize, learning_rate, RMSE_best, RMSE_tmp, MAE_tmp, maxAE_tmp, RMSE_a1, RMSE_a2
+real(rp) :: deriv, tmp, tmp2, step_size, stepsize, learning_rate
+real(rp) :: RMSE_best, RMSE_tmp, MAE_tmp, maxAE_tmp, RMSE_a1, RMSE_a2
 
 integer :: cmd_count
 character(len=1024) :: arg, bla
@@ -252,6 +253,7 @@ allocate(charges(4*num_charges-1), bestcharges(4*num_charges-1), search_range(2,
 qdim = 4*num_charges-1
 if((ios /= 0).or.(num_charges < 1)) call throw_error('"'//trim(input_xyzfile)//'" has the wrong format.')
 read(30,*,iostat=ios) !skip comment line
+
 total_charge  = 0._rp
 !read charge coordinates and magnitude (also automatically determines total charge)
 do i = 1,qdim,4
@@ -289,8 +291,6 @@ write(*, '(A,I10)') "# Steps: ", n_steps
 do g=1,n_steps,1
     do i = 1,qdim,1   
         if (mod(i, 4) > 0) then
-        ! print*, i, mod(i, 4)
-
         ! Numerical gradient
         charges(i) = charges(i) + step_size ! take a step forward
         RMSE_a1 = rmse_qtot(charges(1:qdim)) ! calculate RMSD
@@ -318,6 +318,8 @@ write(*,'(A30,2ES23.9,I10)') "Error", RMSE_a1*hartree2kcal
 call write_xyz_file(charges(1:qdim),filename="refined.xyz")
 call write_xyz_file(charges(1:qdim),filename=output_filename)
 
+
+    !  FUNCTIONS
 contains
 
 !-------------------------------------------------------------------------------
