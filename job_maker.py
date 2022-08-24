@@ -68,32 +68,32 @@ def template_fit(args, start_frame, next_frame, prev_frame=None, first=False):
     return output
 
 
-def template_neighbours_from_gaussian_scan(args, do_neighbours=True):
-    paths, neighbours = get_path_neighbours_from_gaussian_scan(args)
-    if not os.path.exists(args.job_folder):
-        os.makedirs(args.job_folder)
-    n_jobs = len(paths)
-    for i, (path, neighbour) in enumerate(zip(paths, neighbours)):
-        if i < n_jobs - 1:
-            is_first = (i == 0)
-            print(i, path, neighbour)
-            tmp_str = template_fit(args, paths[i], paths[i + 1], first=is_first, prev_frame=paths[i - 1])
-            f = open(os.path.join(args.job_folder, f"frame_{paths[i]}_{paths[i + 1]}.sh"), "w")
-            f.write(tmp_str)
-            if do_neighbours:
-                for n in neighbour:
-                    tmp_str = template_fit(args, paths[i], n, first=is_first, prev_frame=paths[i - 1])
-                    _fpath = os.path.join(args.job_folder, f"frame_{paths[i]}_{n}.sh")
-                    f_ = open(_fpath, "w")
-                    f_.write(tmp_str)
-                    f_.close()
-                    f.write(f"\nsbatch {_fpath} \n")
-            try:
-                next_job = os.path.join(args.job_folder, f"frame_{paths[i + 1]}_{paths[i + 2]}.sh")
-                f.write(f"\nsbatch {next_job} \n")
-            except IndexError:
-                pass
-            f.close()
+# def template_neighbours_from_gaussian_scan(args, do_neighbours=True):
+#     paths, neighbours = get_path_neighbours_from_gaussian_scan(args)
+#     if not os.path.exists(args.job_folder):
+#         os.makedirs(args.job_folder)
+#     n_jobs = len(paths)
+#     for i, (path, neighbour) in enumerate(zip(paths, neighbours)):
+#         if i < n_jobs - 1:
+#             is_first = (i == 0)
+#             print(i, path, neighbour)
+#             tmp_str = template_fit(args, paths[i], paths[i + 1], first=is_first, prev_frame=paths[i - 1])
+#             f = open(os.path.join(args.job_folder, f"frame_{paths[i]}_{paths[i + 1]}.sh"), "w")
+#             f.write(tmp_str)
+#             if do_neighbours:
+#                 for n in neighbour:
+#                     tmp_str = template_fit(args, paths[i], n, first=is_first, prev_frame=paths[i - 1])
+#                     _fpath = os.path.join(args.job_folder, f"frame_{paths[i]}_{n}.sh")
+#                     f_ = open(_fpath, "w")
+#                     f_.write(tmp_str)
+#                     f_.close()
+#                     f.write(f"\nsbatch {_fpath} \n")
+#             try:
+#                 next_job = os.path.join(args.job_folder, f"frame_{paths[i + 1]}_{paths[i + 2]}.sh")
+#                 f.write(f"\nsbatch {next_job} \n")
+#             except IndexError:
+#                 pass
+#             f.close()
 
 
 def template_neighbours_from_2drmsd(args, do_neighbours=True):
