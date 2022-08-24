@@ -23,7 +23,7 @@ initial_fit_cube=/data/unibas/boittier/models/methanol/scan2/scan0
 initial_fit=/home/unibas/boittier/fdcm_project/mdcms/methanol/10charges.xyz
 
 morton_start=21
-acd=/data/unibas/boittier/methanol0.1/frame_21/out.acd.acd
+acd=/home/unibas/boittier/fdcm_project/mdcms/methanol/methanol.acd
 
 #  for initial fit
 esp=$cubes_dir/$scan_name$morton_start$suffix'.p.cube'
@@ -39,7 +39,7 @@ cd 'frame_'$morton_start || return
 # Do Initial Fit
 #
 # adjust reference frame
-python $ars -charges $initial_fit -pcube $initial_fit_cube.d.cube  -pcube2 $esp -frames $frames -output refined.xyz > ARS.log
+python $ars -charges $initial_fit -pcube $initial_fit_cube.d.cube  -pcube2 $esp -frames $frames -output refined.xyz -acd $acd > ARS.log
 # do gradient descent fit
 $fdcm -xyz refined.xyz.global -dens $dens -esp  $esp -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 > GD.log
 # re adjust to local
