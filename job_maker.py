@@ -112,7 +112,7 @@ def template_neighbours_from_anytree_and_G(args, do_neighbours=True):
 
     anytree = pd.read_pickle(args.anytree)
     print(anytree)
-    G = pd.read_pickle(args.G_obj)
+    G = pd.read_pickle(args.g_obj)
 
     scan_neighbours_schedule = scan_neighbours_schedule_from_anytree_graph(anytree, G)
 
