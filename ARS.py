@@ -194,7 +194,10 @@ class ARS():
         self.frames = self.frame[1:]
         self.n_frames = len(self.frames)
         for f in self.frames:
-            a1, a2, a3 = f.split()
+            _s = f.split()
+            a1 = f.split()[0]
+            a2 = f.split()[1]
+            a3 = f.split()[2]
             self.frame_atoms.append([int(a1), int(a2), int(a3)])
 
         #  Match charges to closest atoms
