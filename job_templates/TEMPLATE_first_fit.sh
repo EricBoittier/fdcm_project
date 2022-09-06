@@ -51,7 +51,7 @@ $cubefit -v -analysis -esp $esp -esp2 $n_charges'charges.cube' -dens  $dens > $o
 initial_fit=$output_name
 cd ..
 
-dir='frame_'$start'_'$next
+dir='frame_'$next
 output_name=$output_dir/$dir/$dir'-'$start'-'$next'.xyz'
 dens=$cubes_dir/$scan_name$next$suffix'.d.cube'
 esp=$cubes_dir/$scan_name$next$suffix'.p.cube'
