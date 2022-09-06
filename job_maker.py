@@ -77,7 +77,7 @@ def template_neighbours_from_2drmsd(args, do_neighbours=True):
     jobs_submitted = []
     #  Process the schedule for job writing
     for i, (scan, neighbours, schedule) in enumerate(scan_neighbours_schedule):
-        print(i, scan, neighbours, schedule)
+        # print(i, scan, neighbours, schedule)
 
         previous, start, end = scan
         is_first = (start == previous)
