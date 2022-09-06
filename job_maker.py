@@ -121,11 +121,12 @@ def template_neighbours_from_anytree_and_G(args, do_neighbours=False):
     #  list to keep track of jobs so a file isn't overwritten.
     jobs_submitted = []
     #  Process the schedule for job writing
+    first = scan_neighbours_schedule[0][0]
     for i, (scan, neighbours, schedule) in enumerate(scan_neighbours_schedule):
         # print(i, scan, neighbours, schedule)
         print("Current:", scan)
         previous, start, end = scan
-        is_first = (i == 0)
+        is_first = (scan == first)
         print("is_first: ", is_first)
         tmp_str = template_fit(args, start, end, first=is_first, prev_frame=previous)
         with open(os.path.join(args.job_folder, f"p{start}_{end}.sh"), "w") as f:
