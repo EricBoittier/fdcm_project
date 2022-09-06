@@ -29,7 +29,7 @@ cd $output_dir
 
 start=$start_frame
 next=$next_frame
-dir='frame_'$start
+dir='frame_'$start'_'$next
 mkdir -p $dir
 cd $dir
 # Do Initial Fit
