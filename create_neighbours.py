@@ -117,6 +117,7 @@ def scan_neighbours_schedule_from_anytree_graph(anytree, G):
     for i in order:
         start, end = tuple(i)
         if len(visited) == 0:
+            print("prev.:", order[0])
             previous = order[0][0]
         else:
             previous = [x for x in visited if x[1] == start][0]
