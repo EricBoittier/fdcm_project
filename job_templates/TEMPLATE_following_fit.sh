@@ -29,7 +29,7 @@ start=$start_frame
 next=$next_frame
 dir='frame_'$next
 output_name=$output_dir/$dir/$dir'-'$start'-'$next'.xyz'
-initial_fit=$output_dir/"frame_"$start/"frame_"$start'-'$prev_frame'-'$start'.xyz'
+initial_fit=$output_dir/"frame_"$prev_frame/"frame_"$start'-'$prev_frame'-'$start'.xyz'
 #  Go to the output directory
 mkdir -p $output_dir
 cd $output_dir
