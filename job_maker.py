@@ -125,7 +125,7 @@ def template_neighbours_from_anytree_and_G(args, do_neighbours=False):
         # print(i, scan, neighbours, schedule)
         print("Current:", scan)
         previous, start, end = scan
-        is_first = (start == previous)
+        is_first = (i == 0)
         print("is_first: ", is_first)
         tmp_str = template_fit(args, start, end, first=is_first, prev_frame=previous)
         with open(os.path.join(args.job_folder, f"p{start}_{end}.sh"), "w") as f:
