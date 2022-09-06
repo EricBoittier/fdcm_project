@@ -80,7 +80,7 @@ def template_neighbours_from_2drmsd(args, do_neighbours=True):
         print(i, scan, neighbours, schedule)
 
         previous, start, end = scan
-        is_first = (0 == previous)
+        is_first = (start == previous)
         tmp_str = template_fit(args, start, end, first=is_first, prev_frame=previous)
         with open(os.path.join(args.job_folder, f"frame_{start}_{end}.sh"), "w") as f:
             jobs_submitted.append(os.path.join(args.job_folder, f"frame_{start}_{end}.sh"))
