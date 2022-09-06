@@ -123,7 +123,7 @@ def template_neighbours_from_anytree_and_G(args, do_neighbours=False):
     #  Process the schedule for job writing
     for i, (scan, neighbours, schedule) in enumerate(scan_neighbours_schedule):
         # print(i, scan, neighbours, schedule)
-        print(scan)
+        print("Current:", scan)
         previous, start, end = scan
         is_first = (start == previous)
         tmp_str = template_fit(args, start, end, first=is_first, prev_frame=previous)
@@ -147,7 +147,7 @@ def template_neighbours_from_anytree_and_G(args, do_neighbours=False):
 
             #  schedule the jobs preceding this one (i.e. all branches from this node)
             for job in schedule:
-                print(job)
+                print("Next:", job)
                 next_job = os.path.join(args.job_folder, f"p{job[0]}_{job[1]}.sh")
                 f.write(f"\nsbatch {next_job} \n")
                 print(next_job)
