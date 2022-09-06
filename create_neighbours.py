@@ -119,7 +119,7 @@ def scan_neighbours_schedule_from_anytree_graph(anytree, G):
         if len(visited) == 0:
             previous = order[0][0]
         else:
-            previous = start
+            previous = visited[-1]
         print(previous)
         visited.append(previous)
         neighbours = [x for x in G.edges(start) if x[1] != end]
