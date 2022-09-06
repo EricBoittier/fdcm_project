@@ -114,14 +114,14 @@ def scan_neighbours_schedule_from_anytree_graph(anytree, G):
 
     scan_neighbours_schedule = []
     visited = []
+    starting_node = order[0][0]
     for i in order:
         start, end = tuple(i)
-        if len(visited) == 0:
-            previous = order[0][0]
+        if start == starting_node:
+            previous = starting_node
         else:
-            previous = visited[-1]
-        print(previous)
-        visited.append(start)
+            previous = [x for x in visited if x[1] == start][0]
+        visited.append(i)
         neighbours = [x for x in G.edges(start) if x[1] != end]
         schedule = [tuple(x) for x in order if x[0] == end]
         scan_neighbours_schedule.append(((previous, start, end), neighbours, schedule))
