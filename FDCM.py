@@ -4,7 +4,7 @@ import sys
 
 from analyse_scan import analyse
 from job_maker import template_concerted, template_scan, template_morton, \
-    template_neighbours_from_2drmsd, template_neighbours_from_anytree_and_G
+    template_neighbours_from_anytree_and_G
 
 
 def main(argv=None):
