@@ -108,8 +108,6 @@ def template_neighbours_from_2drmsd(args, do_neighbours=True):
 
 
 def template_neighbours_from_anytree_and_G(args, do_neighbours=False):
-    # scan_neighbours_schedule = schedule_from_2drmsd(args.rmsd)
-
     anytree = pd.read_pickle(args.anytree)
     print(anytree)
     G = pd.read_pickle(args.g_obj)
