@@ -1,5 +1,6 @@
 program test
 use differential_evolution
+use M_strings, only: split,delim,chomp
 implicit none
 
 real(rp), parameter :: bohr2angstrom      = 0.52917721067_rp
@@ -89,7 +90,7 @@ real(rp) :: max_charge        = 1._rp  ! maximum allowed absolute value of a cha
 real(rp) :: max_extend        = 5._rp   ! gets calculated automatically from vdW radii
 
 character(len=1024) :: input_esp_cubefile = '', &
-                       skipqs = '', &
+!                       skipqs = '', &
                        compare_esp_cubefile = '', &
                        input_multipolefile = '', &
                        input_xyzfile = '', &
@@ -97,6 +98,9 @@ character(len=1024) :: input_esp_cubefile = '', &
                        prefix = '', &
                        output_filename = '', &
                        dummystring = '', dummystring2 = '', dummystring3 = '' ! input files
+
+type(string) :: skipqs
+
 integer :: ppos !for use with scan()
 
 ! other program "modes", only used for analysis or generating cube files at better resolution
