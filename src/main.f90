@@ -99,7 +99,7 @@ character(len=1024) :: input_esp_cubefile = '', &
                        output_filename = '', &
                        dummystring = '', dummystring2 = '', dummystring3 = '' ! input files
 
-type(string) :: skipqs
+character(len=1024) ::  skipqs = ''
 
 integer :: ppos !for use with scan()
 
@@ -151,7 +151,7 @@ real(rp), dimension(:,:), allocatable :: search_range ! has a minimum and a maxi
 
 integer,  dimension(:),   allocatable :: freeze_q                      ! stores the charges to freeze
 
-type(string), allocatable :: substrings( : )
+character(len=1024), allocatable :: substrings( : )
 
 ! for error handling
 integer :: ios
