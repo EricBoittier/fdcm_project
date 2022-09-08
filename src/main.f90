@@ -156,7 +156,7 @@ character(len=1024), allocatable :: substrings( : )
 ! for error handling
 integer :: ios
 
-integer :: i,j,k,l,a,b,g,try,qdim,lcheck,n_steps !current dimensionality of charge
+integer :: i,j,k,l,a,b,g,x,try,qdim,lcheck,n_steps !current dimensionality of charge
 
 real(rp) :: deriv, tmp, tmp2, step_size, stepsize, learning_rate
 real(rp) :: RMSE_best, RMSE_tmp, MAE_tmp, maxAE_tmp, RMSE_a1, RMSE_a2
@@ -286,17 +286,12 @@ end do
 
 !  allocate the freeze array based on the number of charges
 allocate(freeze_q(num_charges))
-
-write(*,*) skipqs
-
 call split(skipqs,substrings,delimiters="_")
-
-write(*,*) ""
 do i=1,size(substrings)
-write(*,*) substrings(i)
+    x=substrings(i)
+    freeze_q(x) = 1
+    write(*,*) x, freeze_q(x)
 enddo
-
-
 
 !do i=1,num_charges
 !  freeze_q(i)=days(12*(i-1)+1:)
