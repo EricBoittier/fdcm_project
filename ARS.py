@@ -482,6 +482,7 @@ if __name__ == "__main__":
     parser.add_argument('-acd', help='.', default=None)
 
     args = parser.parse_args()
+    print(' '.join(f'{k}={v}' for k, v in vars(args).items()))
 
     ARS_obj = ARS(args.charges, args.pcube, args.frames, pcube_2=args.pcube2, method="bond", atom_charge_match=args.acd)
     ARS_obj.save_charges_global(args.output)
