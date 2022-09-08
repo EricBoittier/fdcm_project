@@ -203,7 +203,7 @@ do i = 1,cmd_count
 
     if(arg(1:l) == '-skipqs') then
         call get_command_argument(i+1, arg, l)
-        read(arg,*,iostat = ios) stepsize
+!        read(arg,*,iostat = ios) stepsize
     end if
 
     
