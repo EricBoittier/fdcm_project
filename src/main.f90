@@ -287,7 +287,8 @@ end do
 allocate(freeze_q(num_charges))
 
 call split(skipqs,substrings,delimiters=',')
-do i=1,size(substrings, dim=1)
+write(*,*) skipqs
+do i=1,size(substrings)+1
 write(*,*) substrings(i)
 enddo
 
