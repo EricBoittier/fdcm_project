@@ -12,7 +12,7 @@ LFLAGS     = -fbacktrace
 
 OBJS = differential_evolution.o m_string.o main.o
 
-OBJS_PAR = pdifferential_evolution.o main.o 
+OBJS_PAR = pdifferential_evolution.o m_string.o main.o
 
 all : fdcm.x pfdcm.x clean
 
