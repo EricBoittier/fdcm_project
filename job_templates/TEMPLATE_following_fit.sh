@@ -12,7 +12,7 @@ fdcm={{fdcm_path}}
 ars={{ars_path}}
 #  Variables for the job
 n_steps={{n_steps}}
-step_size={{step_size}}
+stepsize={{stepsize}}
 learning_rate={{learning_rate}}
 skipqs={{skipqs}}
 n_charges={{n_charges}}

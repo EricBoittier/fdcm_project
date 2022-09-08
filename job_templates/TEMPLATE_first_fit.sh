@@ -12,7 +12,7 @@ fdcm={{fdcm_path}}
 ars={{ars_path}}
 #  Variables for the job
 n_steps={{n_steps}}
-step_size={{step_size}}
+stepsize={{stepsize}}
 learning_rate={{learning_rate}}
 skipqs={{skipqs}}
 n_charges={{n_charges}}
@@ -43,7 +43,7 @@ dens=$cubes_dir/$scan_name$start$suffix'.d.cube'
 # adjust reference frame
 python $ars -charges $initial_fit -pcube $initial_fit_cube.d.cube  -pcube2 $esp -frames $frames -output $start"_fit.xyz" -acd $acd > $output_name.ARS.log
 # do gradient descent fit
-$fdcm -xyz $start"_fit.xyz.global" -dens $dens -esp  $esp -stepsize $step_size -n_steps $n_steps -learning_rate $learning_rate -skipqs $skipqs -output $output_name  > $output_name.GD.log
+$fdcm -xyz $start"_fit.xyz.global" -dens $dens -esp  $esp -stepsize $stepsize -n_steps $n_steps -learning_rate $learning_rate -skipqs $skipqs -output $output_name  > $output_name.GD.log
 # re-adjust to local
 python $ars -charges $output_name -pcube $initial_fit_cube.d.cube -pcube2 $dens -frames $frames -output $output_name -acd $acd > $output_name.ARS-2.log
 # make a cube file for the fit
@@ -65,7 +65,7 @@ cd $dir
 # Adjust reference frame
 python $ars -charges $initial_fit -pcube $cubes_dir/$scan_name$start$suffix'.d.cube' -pcube2 $dens -frames $frames -output $output_name -acd $acd > $output_name.ARS.log
 cp $output_name'.global' refined.xyz
-$fdcm -xyz refined.xyz -dens $dens -esp $esp  -stepsize $step_size -n_steps $n_steps -learning_rate $learning_rate -skipqs $skipqs -output $output_name > $output_name.GD.log
+$fdcm -xyz refined.xyz -dens $dens -esp $esp  -stepsize $stepsize -n_steps $n_steps -learning_rate $learning_rate -skipqs $skipqs -output $output_name > $output_name.GD.log
 cp refined.xyz $next'_final.xyz'
 # re-adjust to local
 python $ars -charges $output_name -pcube $dens -pcube2 $dens -frames $frames -output $output_name -acd $acd > $output_name.ARS-2.log
