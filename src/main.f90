@@ -89,6 +89,7 @@ real(rp) :: max_charge        = 1._rp  ! maximum allowed absolute value of a cha
 real(rp) :: max_extend        = 5._rp   ! gets calculated automatically from vdW radii
 
 character(len=1024) :: input_esp_cubefile = '', &
+                       skipqs = '', &
                        compare_esp_cubefile = '', &
                        input_multipolefile = '', &
                        input_xyzfile = '', &
@@ -165,12 +166,6 @@ if(trim(prefix) /= '') then
     call execute_command_line("mkdir -p "//trim(prefix))
 end if 
 
-! ! initialize RNG (for drawing the population)
-! call init_random_seed(0)
-
-! ! read in the cube file
-! call read_cube_file(trim(input_esp_cubefile),trim(input_density_cubefile))
-
 ! initialize list of atoms to be fitted if nothing was defined with -atom flag
 if(natmfit == 0) then
   natmfit = Natom
@@ -205,13 +200,19 @@ do i = 1,cmd_count
         call get_command_argument(i+1, arg, l)
         read(arg,*,iostat = ios) stepsize
     end if
+
+    if(arg(1:l) == '-skipqs') then
+        call get_command_argument(i+1, arg, l)
+        read(arg,*,iostat = ios) stepsize
+    end if
+
     
     if(arg(1:l) == '-n_steps') then
         call get_command_argument(i+1, arg, l)
         read(arg,*,iostat = ios) n_steps
     end if
     
-    if(arg(1:l) == '-learningrate') then
+    if(arg(1:l) == '-learning_rate') then
         call get_command_argument(i+1, arg, l)
         read(arg,*,iostat = ios) learning_rate
     end if
@@ -245,7 +246,7 @@ vdw_grid_max_cutoff = 100._rp
 !
 ! Read cube files
 call read_cube_file(trim(input_esp_cubefile),trim(input_density_cubefile))
-
+! Read xyz file
 open(30, file=trim(input_xyzfile), status="old", action="read", iostat = ios)
 if(ios /= 0) call throw_error('Could not open "'//trim(input_xyzfile)//'" for reading')
 read(30,*,iostat=ios) num_charges
@@ -283,32 +284,28 @@ RMSE_best = RMSE_tmp
 write(*, '(A,F10.2)') "Step size: ", stepsize
 step_size = stepsize * angstrom2bohr
 write(*, '(A,F10.2)') "Step size in Bohr: ", step_size
-
 write(*, '(A,F10.2)') "Learning Rate: ", learning_rate
 write(*, '(A,I10)') "# Steps: ", n_steps
 
 ! Loop gradient descent for n steps
 do g=1,n_steps,1
-    do i = 1,qdim,1   
+    do i = 1,qdim,1
+        ! skip the part of the array which stores the charge (unchanged)
         if (mod(i, 4) > 0) then
-        ! Numerical gradient
+        ! Calculate numerical gradient
         charges(i) = charges(i) + step_size ! take a step forward
         RMSE_a1 = rmse_qtot(charges(1:qdim)) ! calculate RMSD
         charges(i) = charges(i) - 2 * step_size ! take two steps backwards
         RMSE_a2 = rmse_qtot(charges(1:qdim)) ! calculate RMSD
         charges(i) = charges(i) + step_size ! reset position
         deriv = (RMSE_a1 - RMSE_a2)/2*step_size ! change in Loss function versus step size (two steps)
-        
-        !write(*,'(A30,2ES23.9,I10)') "E dif/step", deriv !hartree2kcal !sqrt(rmse_tot/npts)*hartree2kcalmol
-        !write(*,'(A30,2ES23.9,I10)') "x_start", charges(i)*bohr2angstrom
         charges(i) = charges(i) - learning_rate * deriv
-        !write(*,'(A30,2ES23.9,I10)') "x_final", charges(i)*bohr2angstrom
-        !RMSE_a1 = rmse_qtot(charges(1:qdim))
-        !write(*,'(A30,2ES23.9,I10)') "Error", RMSE_a1*hartree2kcal
         end if
+
     end do
     RMSE_a1 = rmse_qtot(charges(1:qdim))
     write(*,'(A30,I3,2ES23.9,I10)') "Error", g, RMSE_a1*hartree2kcal
+
 end do
 
 !  "Total energy"
