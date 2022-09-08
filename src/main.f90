@@ -287,6 +287,7 @@ write(*,*) substrings(i)
 enddo
 
 
+
 !do i=1,num_charges
 !  freeze_q(i)=days(12*(i-1)+1:)
 !  if (INDEX(days(12*i:),',').eq.0) exit
