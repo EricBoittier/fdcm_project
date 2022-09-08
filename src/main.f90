@@ -212,10 +212,8 @@ do i = 1,cmd_count
     if(arg(1:l) == '-skipqs') then
         call get_command_argument(i+1, arg, l)
         read(arg,*,iostat = ios) skipqs
-        write(*,*) skipqs
     end if
 
-    
     if(arg(1:l) == '-n_steps') then
         call get_command_argument(i+1, arg, l)
         read(arg,*,iostat = ios) n_steps
@@ -279,18 +277,16 @@ do i = 1,qdim,4
     print*, charges(i:i+2)
 end do
 
-!read(30,*,iostat=ios) !skip blank line
-!!    read(30,*) dummystring, RMSE_best !read RMSE (commented as we may be using
-!!    fragments, in which case RMSE in reconstructed file is incorrect)
-!close(30)
 
 !  allocate the freeze array based on the number of charges
-allocate(freeze_q(num_charges))
+allocate(freeze_q(qdim))
 call split(skipqs,substrings,delimiters="_")
 do i=1,size(substrings)
     read(substrings(i), *) x
-    freeze_q(x) = 1
-    write(*,*) x, freeze_q(x)
+    freeze_q(x*4) = 1
+    freeze_q(x*4+1) = 1
+    freeze_q(x*4+2) = 1
+!    write(*,*) x, freeze_q(x)
 enddo
 
 !do i=1,num_charges
@@ -314,6 +310,7 @@ do g=1,n_steps,1
     do i = 1,qdim,1
         ! skip the part of the array which stores the charge (unchanged)
         if (mod(i, 4) > 0) then
+            if (freeze_q(i) == 1) then
         ! Calculate numerical gradient
         charges(i) = charges(i) + step_size ! take a step forward
         RMSE_a1 = rmse_qtot(charges(1:qdim)) ! calculate RMSD
@@ -322,6 +319,7 @@ do g=1,n_steps,1
         charges(i) = charges(i) + step_size ! reset position
         deriv = (RMSE_a1 - RMSE_a2)/2*step_size ! change in Loss function versus step size (two steps)
         charges(i) = charges(i) - learning_rate * deriv
+            end if
         end if
 
     end do
