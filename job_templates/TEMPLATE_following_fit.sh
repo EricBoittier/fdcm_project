@@ -53,7 +53,7 @@ $fdcm -xyz $output_name.global -dens $dens -esp  $esp -stepsize $stepsize -n_ste
 # adjust reference frame
 python $ars -charges $output_name -pcube $esp  -pcube2 $esp -frames $frames -output $output_name -acd $acd > $output_name.ARS-2.log
 # make a cube file for the fit
-$cubefit -v -generate -esp $esp -dens $dens  -xyz refined.xyz > $output_name.cubemaking.log
+$cubefit -v -generate -esp $esp -dens $dens  -xyz $output_name > $output_name.cubemaking.log
 # do analysis
 $cubefit -v -analysis -esp $esp -esp2 $n_charges'charges.cube' -dens  $dens > $output_name.analysis.log
 echo $PWD
