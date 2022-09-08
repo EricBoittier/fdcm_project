@@ -145,6 +145,9 @@ real(rp), dimension(:),   allocatable :: bestcharges  ! best solution found so f
 real(rp), dimension(:,:), allocatable :: search_range ! has a minimum and a maximum value for every entry of charges
 
 
+integer,  dimension(:),   allocatable :: freeze_q                      ! stores the charges to freeze
+type( string ), allocatable :: substrings( : )
+
 ! for error handling
 integer :: ios
 
@@ -203,7 +206,7 @@ do i = 1,cmd_count
 
     if(arg(1:l) == '-skipqs') then
         call get_command_argument(i+1, arg, l)
-!        read(arg,*,iostat = ios) stepsize
+        read(arg,*,iostat = ios) skipqs
     end if
 
     
@@ -270,11 +273,24 @@ do i = 1,qdim,4
     print*, charges(i:i+2)
 end do
 
-read(30,*,iostat=ios) !skip blank line
-!    read(30,*) dummystring, RMSE_best !read RMSE (commented as we may be using
-!    fragments, in which case RMSE in reconstructed file is incorrect)
-close(30)
+!read(30,*,iostat=ios) !skip blank line
+!!    read(30,*) dummystring, RMSE_best !read RMSE (commented as we may be using
+!!    fragments, in which case RMSE in reconstructed file is incorrect)
+!close(30)
 
+!  allocate the freeze array based on the number of charges
+allocate(freeze_q(num_charges))
+
+call skipqs%split(sep=',', tokens=substrings )
+do i=1,size(substrings, dim=1)
+write(*,*) substrings(i)
+enddo
+
+
+!do i=1,num_charges
+!  freeze_q(i)=days(12*(i-1)+1:)
+!  if (INDEX(days(12*i:),',').eq.0) exit
+!end do
 
 write(*, '(A)') "First" 
 RMSE_tmp = rmse_qtot(charges(1:qdim))
