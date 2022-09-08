@@ -146,7 +146,8 @@ real(rp), dimension(:,:), allocatable :: search_range ! has a minimum and a maxi
 
 
 integer,  dimension(:),   allocatable :: freeze_q                      ! stores the charges to freeze
-type( string ), allocatable :: substrings( : )
+
+character(len=1024), allocatable :: substrings( : )
 
 ! for error handling
 integer :: ios
