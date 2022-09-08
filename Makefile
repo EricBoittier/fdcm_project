@@ -38,7 +38,7 @@ pdifferential_evolution.o : src/differential_evolution.f90
 	$(F90) -c $(FFLAGS_PAR) $(INCLUDES) -o $@ src/differential_evolution.f90
 
 main.o : src/main.f90 \
-differential_evolution.o m_string.o
+differential_evolution.o m_strings.o
 	$(F90) -c $(FFLAGS) $(INCLUDES) -o $@ src/main.f90
 
 
