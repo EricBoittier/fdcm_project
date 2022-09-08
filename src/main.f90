@@ -289,7 +289,7 @@ allocate(freeze_q(num_charges))
 
 write(*,*) skipqs
 
-call split(skipqs,substrings,delimiter="_")
+call split(skipqs,substrings,delimiters="_")
 
 write(*,*) ""
 do i=1,size(substrings)
