@@ -283,10 +283,10 @@ allocate(freeze_q(qdim))
 call split(skipqs,substrings,delimiters="_")
 do i=1,size(substrings)
     read(substrings(i), *) x
-    freeze_q(x*4) = 1
-    freeze_q(x*4+1) = 1
-    freeze_q(x*4+2) = 1
-    write(*,*) "skipping charge: ", x, freeze_q(x*4), freeze_q(x*4+2)
+    freeze_q((x-1)*4+1) = 1
+    freeze_q((x-1)*4+2) = 1
+    freeze_q((x-1)*4+3) = 1
+    write(*,*) "skipping charge: ", x, (x-1)*4+1, (x-1)*4+2, (x-1)*4+3
 enddo
 
 !do i=1,num_charges
