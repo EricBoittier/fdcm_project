@@ -286,7 +286,7 @@ do i=1,size(substrings)
     freeze_q(x*4) = 1
     freeze_q(x*4+1) = 1
     freeze_q(x*4+2) = 1
-!    write(*,*) x, freeze_q(x)
+    write(*,*) "skipping charge: ", x, freeze_q(x*4), freeze_q(x*4+2)
 enddo
 
 !do i=1,num_charges
@@ -310,7 +310,7 @@ do g=1,n_steps,1
     do i = 1,qdim,1
         ! skip the part of the array which stores the charge (unchanged)
         if (mod(i, 4) > 0) then
-            if (freeze_q(i) == 1) then
+            if (freeze_q(i) .NE. 1) then
         ! Calculate numerical gradient
         charges(i) = charges(i) + step_size ! take a step forward
         RMSE_a1 = rmse_qtot(charges(1:qdim)) ! calculate RMSD
