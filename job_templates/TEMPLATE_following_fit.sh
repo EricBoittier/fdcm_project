@@ -12,6 +12,9 @@ fdcm={{fdcm_path}}
 ars={{ars_path}}
 #  Variables for the job
 n_steps={{n_steps}}
+step_size={{step_size}}
+learning_rate={{learning_rate}}
+skipqs={{skipqs}}
 n_charges={{n_charges}}
 scan_name={{scan_name}}
 suffix={{suffix}}
@@ -46,7 +49,7 @@ dens=$cubes_dir/$scan_name$next$suffix'.d.cube'
 # adjust reference frame
 python $ars -charges $initial_fit -pcube $dens1 -pcube2 $dens -frames $frames -output $output_name -acd $acd > $output_name.ARS.log
 # do gradient descent fit
-$fdcm -xyz $output_name.global -dens $dens -esp  $esp -stepsize 0.2 -n_steps $n_steps -learning_rate 0.5 -output $output_name > $output_name.GD.log
+$fdcm -xyz $output_name.global -dens $dens -esp  $esp -stepsize $stepsize -n_steps $n_steps -learning_rate $learning_rate -skipqs $skipqs -output $output_name > $output_name.GD.log
 # adjust reference frame
 python $ars -charges $output_name -pcube $esp  -pcube2 $esp -frames $frames -output $output_name -acd $acd > $output_name.ARS-2.log
 # make a cube file for the fit

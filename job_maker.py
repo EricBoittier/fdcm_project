@@ -60,6 +60,7 @@ def template_fit(args, start_frame, next_frame, prev_frame=None, first=False):
 
     output = TEMPLATE.render(cubefit_path=args.cubefit_path, fdcm_path=args.fdcm_path, ars_path=args.ars_path,
                              n_charges=args.n_charges, suffix=args.suffix,
+                             stepsize=args.stepsize, learning_rate=args.learning_rate, skipqs=args.skipqs,
                              n_steps=args.n_steps, scan_name=args.scan_name, cubes_dir=args.cubes_dir,
                              output_dir=args.output_dir, frames=args.frames, initial_fit=args.initial_fit,
                              initial_fit_cube=args.initial_fit_cube, n_scan_points=args.n_scan_points,
