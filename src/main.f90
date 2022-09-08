@@ -1,6 +1,6 @@
 program test
 use differential_evolution
-
+use M_strings, only: split,delim,chomp
 implicit none
 
 real(rp), parameter :: bohr2angstrom      = 0.52917721067_rp
@@ -286,10 +286,10 @@ end do
 !  allocate the freeze array based on the number of charges
 allocate(freeze_q(num_charges))
 
-!call skipqs%split(sep=',', tokens=substrings )
-!do i=1,size(substrings, dim=1)
-!write(*,*) substrings(i)
-!enddo
+call skipqs%split(sep=',', tokens=substrings )
+do i=1,size(substrings, dim=1)
+write(*,*) substrings(i)
+enddo
 
 
 
