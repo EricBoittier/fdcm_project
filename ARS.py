@@ -487,11 +487,13 @@ if __name__ == "__main__":
     ARS_obj = ARS(args.charges, args.pcube, args.frames, pcube_2=args.pcube2, method="bond", atom_charge_match=args.acd)
     if args.pcube2 is not None:
         ARS_obj.save_charges_global(args.output)
+
     ARS_obj.save_charges_local(args.output)
     ARS_obj.save_charge_atom_associations(filename=args.output)
 
-    print(f"RMSD_ATOMS = {ARS_obj.get_distance_atoms()}")
-    print(f"RMSD_CHARGES = {ARS_obj.get_distance_charges()}")
+    if args.pcube2 is not None:
+        print(f"RMSD_ATOMS = {ARS_obj.get_distance_atoms()}")
+        print(f"RMSD_CHARGES = {ARS_obj.get_distance_charges()}")
 
     # dih = False
     # if len(sys.argv) > 6:
