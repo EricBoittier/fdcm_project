@@ -10,7 +10,7 @@ LFLAGS     = -fbacktrace
 # Object Files for build #
 ##########################
 
-OBJS = differential_evolution.o main.o m_string.o
+OBJS = differential_evolution.o m_string.o main.o
 
 OBJS_PAR = pdifferential_evolution.o main.o 
 
