@@ -485,7 +485,8 @@ if __name__ == "__main__":
     print(' '.join(f'{k}={v}\n' for k, v in vars(args).items()))
 
     ARS_obj = ARS(args.charges, args.pcube, args.frames, pcube_2=args.pcube2, method="bond", atom_charge_match=args.acd)
-    ARS_obj.save_charges_global(args.output)
+    if args.pcube2 is not None:
+        ARS_obj.save_charges_global(args.output)
     ARS_obj.save_charges_local(args.output)
     ARS_obj.save_charge_atom_associations(filename=args.output)
 

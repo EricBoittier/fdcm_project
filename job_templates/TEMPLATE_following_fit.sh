@@ -51,7 +51,7 @@ python $ars -charges $initial_fit -pcube $dens1 -pcube2 $dens -frames $frames -o
 # do gradient descent fit
 $fdcm -xyz $output_name.global -dens $dens -esp  $esp -stepsize $stepsize -n_steps $n_steps -learning_rate $learning_rate -skipqs $skipqs -output $output_name > $output_name.GD.log
 # adjust reference frame
-python $ars -charges $output_name -pcube $esp  -pcube2 $esp -frames $frames -output $output_name -acd $acd > $output_name.ARS-2.log
+python $ars -charges $output_name -pcube $esp  -frames $frames -output $output_name -acd $acd > $output_name.ARS-2.log
 # make a cube file for the fit
 $cubefit -v -generate -esp $esp -dens $dens  -xyz $output_name > $output_name.cubemaking.log
 # do analysis
