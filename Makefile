@@ -10,9 +10,9 @@ LFLAGS     = -fbacktrace
 # Object Files for build #
 ##########################
 
-OBJS = differential_evolution.o m_string.o main.o
+OBJS = differential_evolution.o m_strings.o main.o
 
-OBJS_PAR = pdifferential_evolution.o m_string.o main.o
+OBJS_PAR = pdifferential_evolution.o m_strings.o main.o
 
 all : fdcm.x pfdcm.x clean
 
@@ -28,7 +28,7 @@ pfdcm.x : $(OBJS_PAR)
 #######################################
 # Object dependencies and compilation #
 #######################################
-m_string.o : src/m_string.f90 $(F90) -c $(FFLAGS) $(INCLUDES) -o $@ src/m_string.f90
+m_strings.o : src/m_strings.f90 $(F90) -c $(FFLAGS) $(INCLUDES) -o $@ src/m_strings.f90
 
 differential_evolution.o : src/differential_evolution.f90
 	$(F90) -c $(FFLAGS) $(INCLUDES) -o $@ src/differential_evolution.f90
