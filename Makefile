@@ -28,7 +28,7 @@ pfdcm.x : $(OBJS_PAR)
 #######################################
 # Object dependencies and compilation #
 #######################################
-m_strings.o : src/m_strings.f90
+m_strings.o : src/m_strings.f90 \
     $(F90) -c $(FFLAGS) $(INCLUDES) -o $@ src/m_strings.f90
 
 differential_evolution.o : src/differential_evolution.f90
