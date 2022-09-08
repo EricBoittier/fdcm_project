@@ -286,8 +286,11 @@ end do
 !  allocate the freeze array based on the number of charges
 allocate(freeze_q(num_charges))
 
-call split(skipqs,substrings,delimiters=',')
 write(*,*) skipqs
+
+call split(skipqs,substrings,delimiters=',')
+
+write(*,*) ""
 do i=1,size(substrings)+1
 write(*,*) substrings(i)
 enddo
