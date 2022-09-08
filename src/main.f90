@@ -212,6 +212,7 @@ do i = 1,cmd_count
     if(arg(1:l) == '-skipqs') then
         call get_command_argument(i+1, arg, l)
         read(arg,*,iostat = ios) skipqs
+        write(*,*) skipqs
     end if
 
     
@@ -291,7 +292,7 @@ write(*,*) skipqs
 call split(skipqs,substrings)
 
 write(*,*) ""
-do i=1,size(substrings)+1
+do i=1,size(substrings)
 write(*,*) substrings(i)
 enddo
 
