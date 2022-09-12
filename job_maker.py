@@ -63,7 +63,7 @@ def template_fit(args, start_frame, next_frame, prev_frame=None, first=False):
                              stepsize=args.stepsize, learning_rate=args.learning_rate, skipqs=args.skipqs,
                              n_steps=args.n_steps, scan_name=args.scan_name, cubes_dir=args.cubes_dir,
                              output_dir=args.output_dir, frames=args.frames, initial_fit=args.initial_fit,
-                             initial_fit_cube=args.initial_fit_cube, n_scan_points=args.n_scan_points,
+                             initial_fit_cube=args.initial_fit_cube,
                              start_frame=start_frame, next_frame=next_frame, prev_frame=prev_frame, acd=args.acd)
     return output
 
