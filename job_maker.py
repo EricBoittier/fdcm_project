@@ -108,7 +108,7 @@ def template_fit(args, start_frame, next_frame, prev_frame=None, first=False):
 #                 print(next_job)
 
 
-def template_neighbours_from_anytree_and_G(args, do_neighbours=False):
+def template_neighbours_from_anytree_and_G(args, do_neighbours=True):
     anytree = pd.read_pickle(args.anytree)
     print(anytree)
     G = pd.read_pickle(args.g_obj)
@@ -135,18 +135,16 @@ def template_neighbours_from_anytree_and_G(args, do_neighbours=False):
             print(os.path.join(args.job_folder, f"p{start}_{end}.sh"))
             f.write(tmp_str)
 
-            #  write the neighbour jobs and schedule them
-            # if do_neighbours:
-            #     for n in neighbours:
-            #         _fpath = os.path.join(args.job_folder, f"p{start}_{n[1]}.sh")
-            #         if _fpath not in jobs_submitted:
-            #             tmp_str = template_fit(args, start, n[1], first=is_first, prev_frame=previous)
-            #
-            #             f_ = open(_fpath, "w")
-            #             f_.write(tmp_str)
-            #
-            #             print(f"\nsbatch {_fpath} \n")
-            #             f.write(f"\nsbatch {_fpath} \n")
+            # write the neighbour jobs and schedule them
+            if do_neighbours:
+                for n in neighbours:
+                    _fpath = os.path.join(args.job_folder, f"p{start}_{n[1]}.sh")
+                    if _fpath not in jobs_submitted:
+                        tmp_str = template_fit(args, start, n[1], first=is_first, prev_frame=previous)
+                        f_ = open(_fpath, "w")
+                        f_.write(tmp_str)
+                        print(f"\nsbatch {_fpath} \n")
+                        f.write(f"\nsbatch {_fpath} \n")
 
             #  schedule the jobs preceding this one (i.e. all branches from this node)
             for job in schedule:
