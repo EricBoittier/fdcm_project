@@ -136,16 +136,16 @@ def template_neighbours_from_anytree_and_G(args, do_neighbours=True):
             f.write(tmp_str)
 
             # write the neighbour jobs and schedule them
-            if do_neighbours:
-                for n in neighbours:
-                    _fpath = os.path.join(args.job_folder, f"p{start}_{n[1]}.sh")
-                    if _fpath not in jobs_submitted:
-                        jobs_submitted.append(_fpath)
-                        tmp_str = template_fit(args, start, n[1], first=is_first, prev_frame=previous)
-                        f_ = open(_fpath, "w")
-                        f_.write(tmp_str)
-                        print(f"\nsbatch {_fpath} \n")
-                        f.write(f"\nsbatch {_fpath} \n")
+            # if do_neighbours:
+            #     for n in neighbours:
+            #         _fpath = os.path.join(args.job_folder, f"p{start}_{n[1]}.sh")
+            #         if _fpath not in jobs_submitted:
+            #             jobs_submitted.append(_fpath)
+            #             tmp_str = template_fit(args, start, n[1], first=is_first, prev_frame=previous)
+            #             f_ = open(_fpath, "w")
+            #             f_.write(tmp_str)
+            #             print(f"\nsbatch {_fpath} \n")
+            #             f.write(f"\nsbatch {_fpath} \n")
 
             #  schedule the jobs preceding this one (i.e. all branches from this node)
             for job in schedule:
